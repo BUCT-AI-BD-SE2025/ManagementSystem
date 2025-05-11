@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buct_ai_bd_se2025.managementsystem.mapper.UserRoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.buct_ai_bd_se2025.managementsystem.entity.UserRole">
+            <id property="uid" column="uid" />
+            <id property="roleId" column="role_id" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        uid,role_id
+    </sql>
+</mapper>
