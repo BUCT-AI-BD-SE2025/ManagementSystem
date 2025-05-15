@@ -1,0 +1,33 @@
+package com.buct_ai_bd_se2025.managementsystem.dto;
+
+import lombok.Data;
+import com.buct_ai_bd_se2025.managementsystem.entity.User;
+
+import java.time.LocalDateTime;
+
+@Data
+public class UserInfoDTO {
+    private String uid;
+    private String username;
+    private String nickname;
+    private String email;
+    private String phone;
+    private String sex;
+    private String avatarUrl;
+    private Object status;
+    private LocalDateTime lastLogin;
+    private LocalDateTime createdAt;
+
+    public UserInfoDTO(User user) {
+        this.uid = user.getUid();
+        this.username = user.getUsername();
+        this.nickname = user.getNickname();
+        this.email = user.getEmail();
+        this.phone = user.getPhone();
+        this.sex = user.getSex();
+        this.avatarUrl = user.getAvatarUrl();
+        this.status = user.getStatus();
+        this.lastLogin = user.getLastLogin();
+        this.createdAt = user.getCreatedAt();
+    }
+}

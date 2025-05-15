@@ -1,17 +1,17 @@
 package com.buct_ai_bd_se2025.managementsystem.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import lombok.Data;
 
+import com.buct_ai_bd_se2025.managementsystem.enums.UserStatus;
+import lombok.Data;
+import com.fasterxml.uuid.Generators;
 /**
  * 
- * @TableName user
+ * &#064;TableName  user
  */
 @TableName(value ="user")
 @Data
@@ -66,7 +66,7 @@ public class User implements Serializable
     /**
      * 
      */
-    private Object status;
+    private UserStatus status;
 
     /**
      * 
@@ -84,4 +84,15 @@ public class User implements Serializable
     private LocalDateTime updatedAt;
 
 
+    public User(String username, String password, String email)
+    {
+        this.uid = Generators.timeBasedGenerator().generate().toString(); // UUID v7
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = "";
+        this.sex = "2";
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
 }
