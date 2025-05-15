@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import com.buct_ai_bd_se2025.managementsystem.enums.UserStatus;
 import lombok.Data;
 import com.fasterxml.uuid.Generators;
 /**
@@ -64,7 +66,7 @@ public class User implements Serializable
     /**
      * 
      */
-    private Object status;
+    private UserStatus status;
 
     /**
      * 

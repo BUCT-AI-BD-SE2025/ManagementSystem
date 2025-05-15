@@ -14,6 +14,14 @@ import org.mapstruct.Mapper;
 public interface UserMapper extends BaseMapper<User>
 {
     User selectByUsername(String username);
+
+    User selectByEmail(String email);
+
+    //update ip
+    int updateIp(User user);
+
+    //update last login
+    int updateLastLogin(User user);
 }
 
 

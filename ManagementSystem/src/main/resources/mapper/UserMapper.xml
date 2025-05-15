@@ -10,4 +10,21 @@
         WHERE username = #{username}
     </select>
 
+    <select id="selectByEmail" resultType="com.buct_ai_bd_se2025.managementsystem.entity.User">
+        SELECT *
+        FROM user
+        WHERE email = #{email}
+    </select>
+
+    <update id="updateLastLogin">
+        UPDATE user
+        SET last_login = #{lastLogin}
+        WHERE uid = #{uid}
+    </update>
+
+    <update id="updateIp">
+        UPDATE user
+        SET ip = #{ip}
+        WHERE uid = #{uid}
+    </update>
 </mapper>
