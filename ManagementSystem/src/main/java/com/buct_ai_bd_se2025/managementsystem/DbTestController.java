@@ -1,4 +1,4 @@
-package com.buct_ai_bd_se2025.managementsystem.controller;
+package com.buct_ai_bd_se2025.managementsystem;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.sql.DataSource;

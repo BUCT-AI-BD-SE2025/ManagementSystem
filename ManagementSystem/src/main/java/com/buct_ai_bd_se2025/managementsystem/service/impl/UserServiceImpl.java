@@ -9,12 +9,24 @@ import org.springframework.stereotype.Service;
 /**
 * @author YOZORA
 * @description 针对表【user】的数据库操作Service实现
-* @createDate 2025-05-11 09:08:09
+* @createDate 2025-05-12 00:32:16
 */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     implements UserService{
 
+    @Override
+    public User varifyUser(User user)
+    {
+
+        return null;
+    }
+
+    @Override
+    public User getUserByUsername(String username)
+    {
+        return baseMapper.selectByUsername(username);
+    }
 }
 
 
