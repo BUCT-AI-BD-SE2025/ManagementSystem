@@ -8,7 +8,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Data;
-
+import com.fasterxml.uuid.Generators;
+import java.util.UUID;
 /**
  * 
  * @TableName user
@@ -84,4 +85,15 @@ public class User implements Serializable
     private LocalDateTime updatedAt;
 
 
+    public User(String username, String password, String email)
+    {
+        this.uid = Generators.timeBasedGenerator().generate().toString(); // UUID v7
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = "";
+        this.sex = "2";
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
 }
