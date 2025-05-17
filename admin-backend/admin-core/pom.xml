@@ -2,15 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>fun.yozora</groupId>
 		<artifactId>admin</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
+
 	<artifactId>admin-core</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>admin-core</name>
 	<description>admin-core</description>
+
 	<url/>
 	<licenses>
 		<license/>
@@ -31,30 +35,25 @@
 		<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-spring-boot3-starter</artifactId>
-			<version>3.5.9</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-jsqlparser</artifactId>
-			<version>3.5.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.3.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.spring4all</groupId>
 			<artifactId>spring-boot-starter-swagger</artifactId>
-			<version>1.5.1.RELEASE</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.fasterxml.uuid</groupId>
 			<artifactId>java-uuid-generator</artifactId>
-			<version>4.0.1</version>
 		</dependency>
 
 		<dependency>
@@ -65,7 +64,6 @@
 		<dependency>
 			<groupId>com.auth0</groupId>
 			<artifactId>java-jwt</artifactId>
-			<version>4.4.0</version>
 		</dependency>
 
 		<dependency>
@@ -86,13 +84,11 @@
 		<dependency>
 			<groupId>cn.dev33</groupId>
 			<artifactId>sa-token-spring-boot3-starter</artifactId>
-			<version>1.42.0</version>
 		</dependency>
 		<!-- BCrypt -->
 		<dependency>
 			<groupId>org.mindrot</groupId>
 			<artifactId>jbcrypt</artifactId>
-			<version>0.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
