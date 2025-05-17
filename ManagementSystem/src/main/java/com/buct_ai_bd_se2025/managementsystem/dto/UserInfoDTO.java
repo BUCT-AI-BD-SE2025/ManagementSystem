@@ -1,9 +1,11 @@
 package com.buct_ai_bd_se2025.managementsystem.dto;
 
+import cn.dev33.satoken.stp.StpUtil;
 import lombok.Data;
 import com.buct_ai_bd_se2025.managementsystem.entity.User;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class UserInfoDTO {
@@ -17,6 +19,9 @@ public class UserInfoDTO {
     private Object status;
     private LocalDateTime lastLogin;
     private LocalDateTime createdAt;
+    private List<String> roles;
+    private List<String> permissions;
+    private String realName;
 
     public UserInfoDTO(User user) {
         this.uid = user.getUid();
@@ -29,5 +34,6 @@ public class UserInfoDTO {
         this.status = user.getStatus();
         this.lastLogin = user.getLastLogin();
         this.createdAt = user.getCreatedAt();
+        this.realName = user.getUsername();
     }
 }

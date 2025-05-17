@@ -57,7 +57,7 @@ const formSchema = computed((): VbenFormSchema[] => {
             );
             if (findUser) {
               form.setValues({
-                password: '123456',
+                password: '',
                 username: findUser.value,
               });
             }
@@ -94,5 +94,9 @@ const formSchema = computed((): VbenFormSchema[] => {
     :form-schema="formSchema"
     :loading="authStore.loginLoading"
     @submit="authStore.authLogin"
+    :show-third-party-login="false"
+    :show-qrcode-login="false"
+    :show-code-login="false"
+    :show-forget-password="false"
   />
 </template>

@@ -1,4 +1,4 @@
-package com.buct_ai_bd_se2025.managementsystem.controller;
+package com.buct_ai_bd_se2025.managementsystem.controller.v1;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
@@ -6,24 +6,19 @@ import com.buct_ai_bd_se2025.managementsystem.dto.UpdateUserInfoDTO;
 import com.buct_ai_bd_se2025.managementsystem.dto.UserInfoDTO;
 import com.buct_ai_bd_se2025.managementsystem.entity.Permission;
 import com.buct_ai_bd_se2025.managementsystem.entity.User;
-import com.buct_ai_bd_se2025.managementsystem.enums.UserStatus;
-import com.buct_ai_bd_se2025.managementsystem.mapper.UserMapper;
 import com.buct_ai_bd_se2025.managementsystem.service.PermissionService;
 import com.buct_ai_bd_se2025.managementsystem.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.w3c.dom.stylesheets.LinkStyle;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController
 {
     @Autowired
@@ -31,49 +26,6 @@ public class UserController
 
     @Autowired
     private PermissionService permissionService;
-
-    @Autowired
-    private HttpServletRequest request;
-
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public SaResult doLogin(String username, String password)
-    {
-        if (username==null||password==null)
-        {
-            return SaResult.error("用户名或密码不能为空");
-        }
-        User dbUser = userService.getUserByUsername(username);
-        if (dbUser == null)
-        {
-            return SaResult.error("用户不存在");
-        }
-        if (!dbUser.getPassword().equals(password))
-        {
-            return SaResult.error("密码错误");
-        }
-        if (UserStatus.LOCKED.equals(dbUser.getStatus()))
-        {
-            return SaResult.error("已被封禁");
-        }
-        if (UserStatus.DELETED.equals(dbUser.getStatus()))
-        {
-            return SaResult.error("用户已被删除");
-        }
-        if (UserStatus.ACTIVE.equals(dbUser.getStatus()))
-        {
-
-            dbUser.setLastLogin(LocalDateTime.now());
-            dbUser.setIp(request.getRemoteAddr());
-
-            userService.updateIp(dbUser);
-            userService.updateLastLogin(dbUser);
-
-            StpUtil.login(dbUser.getUid());
-            return SaResult.ok("登录成功");
-        }
-
-        return SaResult.error("未知错误");
-    }
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public SaResult doRegister(String username, String password, String email)
@@ -96,12 +48,7 @@ public class UserController
         else
             return SaResult.error("注册失败");
     }
-    @RequestMapping(value = "/logout",method = RequestMethod.DELETE)
-    public SaResult doLogout()
-    {
-        StpUtil.logout();
-        return SaResult.ok("登出成功");
-    }
+
 
     @RequestMapping(value = "/update",method = RequestMethod.PUT)
     public SaResult update(@RequestBody UpdateUserInfoDTO user)
@@ -131,7 +78,7 @@ public class UserController
         }
     }
 
-    @RequestMapping("/isLogin")
+    @RequestMapping(value = "/isLogin",method = RequestMethod.GET)
     public SaResult isLogin()
     {
         if (StpUtil.isLogin())
@@ -144,39 +91,32 @@ public class UserController
         }
     }
 
-    @RequestMapping("/tokenInfo")
+    @RequestMapping(value = "/tokenInfo",method = RequestMethod.GET)
     public SaResult tokenInfo()
     {
         return SaResult.data(StpUtil.getTokenInfo());
     }
 
-    @RequestMapping("/permission")
+
+    @RequestMapping(value = "/permission", method = RequestMethod.GET)
     public SaResult permission()
     {
-        System.out.println(StpUtil.getPermissionList());
         return SaResult.data(StpUtil.getPermissionList());
     }
 
-    @RequestMapping("/role")
+
+    @RequestMapping(value = "/role", method = RequestMethod.GET)
     public SaResult role()
     {
         return SaResult.data(StpUtil.getRoleList());
     }
 
-    @RequestMapping("/uid")
+    @RequestMapping(value = "/uid", method = RequestMethod.GET)
     public SaResult uid()
     {
         return SaResult.data(StpUtil.getLoginId());
     }
     
-    @RequestMapping(value = "/test",method = RequestMethod.GET)
-    public String test()
-    {
-        List<Permission> permissionList = permissionService.getAllPermissionsByUserId("0");
-        System.out.println(permissionList.stream().map(Permission::getPermName).toList());
-        return "OK";
-    }
-
     @RequestMapping(value = "/info",method = RequestMethod.GET)
     public SaResult getUserInfo()
     {
@@ -192,6 +132,8 @@ public class UserController
             return SaResult.error("用户不存在");
         }
         UserInfoDTO userInfoDTO = new UserInfoDTO(user);
+        userInfoDTO.setPermissions(StpUtil.getRoleList());
+        userInfoDTO.setRoles(StpUtil.getRoleList());
         return SaResult.data(userInfoDTO);
     }
 }

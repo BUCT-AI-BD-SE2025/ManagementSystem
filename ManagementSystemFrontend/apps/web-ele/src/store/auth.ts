@@ -39,6 +39,7 @@ export const useAuthStore = defineStore('auth', () => {
       if (accessToken) {
         // 将 accessToken 存储到 accessStore 中
         accessStore.setAccessToken(accessToken);
+        document.cookie = `satoken=${accessToken}; path=/; domain=localhost; max-age=2592000`;
 
         // 获取用户信息并存储到 accessStore 中
         const [fetchUserInfoResult, accessCodes] = await Promise.all([
