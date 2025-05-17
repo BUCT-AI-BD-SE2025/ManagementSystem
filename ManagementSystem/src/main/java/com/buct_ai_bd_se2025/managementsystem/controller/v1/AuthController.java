@@ -2,16 +2,17 @@ package com.buct_ai_bd_se2025.managementsystem.controller.v1;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
+import com.buct_ai_bd_se2025.managementsystem.dto.LoginDTO;
 import com.buct_ai_bd_se2025.managementsystem.entity.User;
 import com.buct_ai_bd_se2025.managementsystem.enums.UserStatus;
 import com.buct_ai_bd_se2025.managementsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -24,9 +25,14 @@ public class AuthController
     private HttpServletRequest request;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-
-    public SaResult doLogin(String username, String password)
+    public SaResult Login(@RequestBody LoginDTO loginDTO)
     {
+        String username = loginDTO.getUsername();
+        String password = loginDTO.getPassword();
+        if (!loginDTO.isCaptcha())
+        {
+            return SaResult.error("验证错误");
+        }
         if (username==null||password==null)
         {
             return SaResult.error("用户名或密码不能为空");
@@ -58,11 +64,36 @@ public class AuthController
             userService.updateLastLogin(dbUser);
 
             StpUtil.login(dbUser.getUid());
-            return SaResult.ok("登录成功");
+            String token = StpUtil.getTokenValue();
+            return SaResult.ok("登录成功").setData(Map.of("accessToken",token));
         }
 
         return SaResult.error("未知错误");
     }
 
+    @RequestMapping(value = "/logout",method = RequestMethod.POST)
+    public SaResult doLogout()
+    {
+        StpUtil.logout();
+        return SaResult.ok("登出成功");
+    }
 
+    @RequestMapping(value = "/codes", method = RequestMethod.GET)
+    public SaResult getCodes()
+    {
+        if (!StpUtil.isLogin())
+            return SaResult.error("未登录");
+        return SaResult.data(StpUtil.getPermissionList());
+    }
+
+    @RequestMapping(value = "refresh", method = RequestMethod.GET)
+    public SaResult refresh()
+    {
+        if (!StpUtil.isLogin())
+            return SaResult.error("未登录");
+
+        String token = StpUtil.getTokenValue();
+
+        return SaResult.ok("刷新成功").setData(Map.of("accessToken",token,"status", 200));
+    }
 }
