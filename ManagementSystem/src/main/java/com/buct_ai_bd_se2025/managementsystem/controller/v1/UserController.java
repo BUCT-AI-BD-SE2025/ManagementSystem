@@ -48,12 +48,7 @@ public class UserController
         else
             return SaResult.error("注册失败");
     }
-    @RequestMapping(value = "/logout",method = RequestMethod.DELETE)
-    public SaResult doLogout()
-    {
-        StpUtil.logout();
-        return SaResult.ok("登出成功");
-    }
+
 
     @RequestMapping(value = "/update",method = RequestMethod.PUT)
     public SaResult update(@RequestBody UpdateUserInfoDTO user)
@@ -102,12 +97,13 @@ public class UserController
         return SaResult.data(StpUtil.getTokenInfo());
     }
 
+
     @RequestMapping(value = "/permission", method = RequestMethod.GET)
     public SaResult permission()
     {
-        System.out.println(StpUtil.getPermissionList());
         return SaResult.data(StpUtil.getPermissionList());
     }
+
 
     @RequestMapping(value = "/role", method = RequestMethod.GET)
     public SaResult role()
@@ -121,14 +117,6 @@ public class UserController
         return SaResult.data(StpUtil.getLoginId());
     }
     
-    @RequestMapping(value = "/test",method = RequestMethod.GET)
-    public String test()
-    {
-        List<Permission> permissionList = permissionService.getAllPermissionsByUserId("0");
-        System.out.println(permissionList.stream().map(Permission::getPermName).toList());
-        return "OK";
-    }
-
     @RequestMapping(value = "/info",method = RequestMethod.GET)
     public SaResult getUserInfo()
     {
@@ -144,6 +132,8 @@ public class UserController
             return SaResult.error("用户不存在");
         }
         UserInfoDTO userInfoDTO = new UserInfoDTO(user);
+        userInfoDTO.setPermissions(StpUtil.getRoleList());
+        userInfoDTO.setRoles(StpUtil.getRoleList());
         return SaResult.data(userInfoDTO);
     }
 }
