@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fun.yozora.admin.core.mapper.RolePermissionMapper">
+
+    <select id="selectPermissionsByRoleId" resultType="fun.yozora.admin.core.entity.Permission">
+        SELECT p.perm_id AS permId,
+               p.perm_name AS permName,
+               p.perm_code AS permCode,
+               p.description
+        FROM role_permission rp
+        JOIN permission p ON rp.perm_id = p.perm_id
+        WHERE rp.role_id = #{roleId}
+    </select>
+
+</mapper>
