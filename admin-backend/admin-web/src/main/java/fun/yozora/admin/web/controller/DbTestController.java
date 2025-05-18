@@ -1,4 +1,4 @@
-package fun.yozora.admin.core;
+package fun.yozora.admin.web.controller;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.sql.DataSource;

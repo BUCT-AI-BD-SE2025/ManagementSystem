@@ -1,9 +1,9 @@
-package fun.yozora.admin.core.controller.v1;
+package fun.yozora.admin.web.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
-import fun.yozora.admin.core.dto.UpdateUserInfoDTO;
-import fun.yozora.admin.core.dto.UserInfoDTO;
+import fun.yozora.admin.web.dto.UpdateUserInfoDTO;
+import fun.yozora.admin.web.dto.UserInfoDTO;
 import fun.yozora.admin.core.entity.User;
 import fun.yozora.admin.core.service.PermissionService;
 import fun.yozora.admin.core.service.UserService;
@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")

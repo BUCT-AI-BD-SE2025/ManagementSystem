@@ -1,6 +1,5 @@
-package fun.yozora.admin.core.dto;
+package fun.yozora.admin.web.dto;
 
-import cn.dev33.satoken.stp.StpUtil;
 import fun.yozora.admin.core.entity.User;
 import lombok.Data;
 

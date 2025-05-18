@@ -1,4 +1,4 @@
-package fun.yozora.admin.core.config;
+package fun.yozora.admin.web.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

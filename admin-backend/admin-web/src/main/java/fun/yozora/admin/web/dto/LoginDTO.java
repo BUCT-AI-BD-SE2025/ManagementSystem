@@ -1,4 +1,4 @@
-package fun.yozora.admin.core.dto;
+package fun.yozora.admin.web.dto;
 
 import lombok.Data;
 

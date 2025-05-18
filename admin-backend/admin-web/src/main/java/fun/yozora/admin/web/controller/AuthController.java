@@ -1,13 +1,12 @@
-package fun.yozora.admin.core.controller.v1;
+package fun.yozora.admin.web.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
-import fun.yozora.admin.core.dto.LoginDTO;
+import fun.yozora.admin.web.dto.LoginDTO;
 import fun.yozora.admin.core.entity.User;
 import fun.yozora.admin.core.enums.UserStatus;
 import fun.yozora.admin.core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
