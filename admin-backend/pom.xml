@@ -16,6 +16,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>admin-core</module>
+        <module>admin-web</module>
+        <module>admin-app</module>
     </modules>
 
     <url/>
