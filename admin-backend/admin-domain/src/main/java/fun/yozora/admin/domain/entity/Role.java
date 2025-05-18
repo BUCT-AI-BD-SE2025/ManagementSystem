@@ -6,13 +6,16 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * 
  * @TableName role
  */
 @TableName(value ="role")
 @Data
-public class Role {
+public class Role implements Serializable {
     /**
      * 
      */
@@ -34,5 +37,6 @@ public class Role {
      */
     private String description;
 
-
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
 }

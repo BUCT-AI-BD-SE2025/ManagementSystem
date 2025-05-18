@@ -7,13 +7,15 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.Getter;
 
+import java.io.Serializable;
+
 /**
  * 
  * @TableName permission
  */
 @TableName(value ="permission")
 @Data
-public class Permission {
+public class Permission implements Serializable {
     /**
      * 
      */
@@ -37,5 +39,6 @@ public class Permission {
      */
     private String description;
 
-
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
 }

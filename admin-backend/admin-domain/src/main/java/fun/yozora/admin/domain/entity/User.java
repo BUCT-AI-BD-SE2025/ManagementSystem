@@ -1,8 +1,10 @@
 package fun.yozora.admin.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -83,6 +85,8 @@ public class User implements Serializable
      */
     private LocalDateTime updatedAt;
 
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
 
     public User(String username, String password, String email)
     {
