@@ -18,6 +18,7 @@
         <module>admin-core</module>
         <module>admin-web</module>
         <module>admin-app</module>
+        <module>admin-review</module>
     </modules>
 
     <url/>
