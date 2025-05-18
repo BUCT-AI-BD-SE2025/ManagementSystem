@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
-@MapperScan("fun.yozora.admin.core.mapper")
+@MapperScan("fun.yozora.**.mapper")
 @ComponentScan("fun.yozora.admin")
 @EnableJpaRepositories("fun.yozora")
 @EntityScan("fun.yozora")

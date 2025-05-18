@@ -19,6 +19,8 @@
         <module>admin-web</module>
         <module>admin-app</module>
         <module>admin-review</module>
+        <module>admin-domain</module>
+        <module>admin-repository</module>
     </modules>
 
     <url/>

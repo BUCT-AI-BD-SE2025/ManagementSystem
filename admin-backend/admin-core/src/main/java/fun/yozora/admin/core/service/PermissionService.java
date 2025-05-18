@@ -1,7 +1,7 @@
 package fun.yozora.admin.core.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import fun.yozora.admin.core.entity.Permission;
+import fun.yozora.admin.domain.entity.Permission;
 
 import java.util.List;
 

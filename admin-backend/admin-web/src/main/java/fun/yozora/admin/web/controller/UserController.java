@@ -4,7 +4,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import fun.yozora.admin.web.dto.UpdateUserInfoDTO;
 import fun.yozora.admin.web.dto.UserInfoDTO;
-import fun.yozora.admin.core.entity.User;
+import fun.yozora.admin.domain.entity.User;
 import fun.yozora.admin.core.service.PermissionService;
 import fun.yozora.admin.core.service.UserService;
 import org.springframework.beans.BeanUtils;

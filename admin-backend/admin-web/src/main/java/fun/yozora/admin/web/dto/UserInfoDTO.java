@@ -1,6 +1,6 @@
 package fun.yozora.admin.web.dto;
 
-import fun.yozora.admin.core.entity.User;
+import fun.yozora.admin.domain.entity.User;
 import lombok.Data;
 
 import java.time.LocalDateTime;

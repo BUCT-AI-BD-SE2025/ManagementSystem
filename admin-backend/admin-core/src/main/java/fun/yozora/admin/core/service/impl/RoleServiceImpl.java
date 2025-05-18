@@ -1,9 +1,9 @@
 package fun.yozora.admin.core.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import fun.yozora.admin.core.entity.Role;
-import fun.yozora.admin.core.mapper.RoleMapper;
-import fun.yozora.admin.core.mapper.UserRoleMapper;
+import fun.yozora.admin.domain.entity.Role;
+import fun.yozora.admin.repository.mapper.RoleMapper;
+import fun.yozora.admin.repository.mapper.UserRoleMapper;
 import fun.yozora.admin.core.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

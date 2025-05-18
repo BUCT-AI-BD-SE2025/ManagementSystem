@@ -1,7 +1,7 @@
 package fun.yozora.admin.core.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import fun.yozora.admin.core.entity.Role;
+import fun.yozora.admin.domain.entity.Role;
 
 import java.util.List;
 
