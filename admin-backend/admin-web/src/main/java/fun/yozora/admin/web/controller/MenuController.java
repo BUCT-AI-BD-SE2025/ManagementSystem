@@ -58,12 +58,12 @@ public class MenuController {
 
         // 构建 Test 页面
         MenuDTO test = MenuDTO.builder()
-                .name("Test")
-                .path("/test")
-                .component("/test/index")
+                .name("Artifact")
+                .path("/")
+                .component("/artifact/index")
                 .meta(MenuMetaDTO.defaultMeta()
                         .toBuilder()
-                        .title("page.test")
+                        .title("page.artifact.title")
                         .noBasicLayout(true)
                         .build())
                 .build();

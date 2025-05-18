@@ -1,2 +1,5 @@
 export type * from './user';
 export type * from '@vben-core/typings';
+export type * from '../../../apps/web-ele/src/types/artifact'
+
+
