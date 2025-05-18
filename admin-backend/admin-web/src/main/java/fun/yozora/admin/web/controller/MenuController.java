@@ -56,7 +56,7 @@ public class MenuController {
                 .children(List.of(analytics, workspace))
                 .build();
 
-        // 构建 Test 页面
+        // 构建 文物管理页面
         MenuDTO test = MenuDTO.builder()
                 .name("Artifact")
                 .path("/")
