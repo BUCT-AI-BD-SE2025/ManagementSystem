@@ -61,6 +61,17 @@
 			<artifactId>mybatis-plus-jsqlparser</artifactId>
 		</dependency>
 
+        <dependency>
+            <groupId>org.jasypt</groupId>
+            <artifactId>jasypt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot-starter</artifactId>
+        </dependency>
+
+
+
 
     </dependencies>
 
