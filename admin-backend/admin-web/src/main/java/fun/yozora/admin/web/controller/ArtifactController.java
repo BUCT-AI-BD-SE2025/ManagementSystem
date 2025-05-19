@@ -24,8 +24,8 @@ public class ArtifactController {
     @GetMapping
     public SaResult getArtifacts(
             @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "20") Integer size) {
-        return SaResult.data(artifactService.page(new Page<>(page, size)));
+            @RequestParam(defaultValue = "20") Integer pageSize) {
+        return SaResult.data(artifactService.page(new Page<>(page, pageSize)));
     }
 
     /**
