@@ -4,8 +4,9 @@ import type { VbenFormProps} from '#/adapter/form';
 import {useVbenVxeGrid, type VxeTableGridOptions} from "#/adapter/vxe-table";
 
 import { Page } from '@vben/common-ui';
+
 import { ElMessage as message } from 'element-plus'
-import {ArtifactApi} from "#/api/artifact";
+import {ArtifactApi} from "#/api/management/artifact";
 import getArtifactList = ArtifactApi.getArtifactList;
 
 interface RowType {
@@ -60,6 +61,8 @@ const gridOptions: VxeTableGridOptions<RowType> = {
     { field: 'id', title: 'ID' },
     { field: 'originId', title: '原始ID' },
     { field: 'title', title: '名称' },
+    { field: 'url', title: '连接' },
+    { field: 'image', title: '图片' },
     { field: 'location', title: '所在地' },
     { field: 'period', title: '所属朝代' },
     { field: 'material', title: '材质' },
@@ -68,7 +71,6 @@ const gridOptions: VxeTableGridOptions<RowType> = {
     { field: 'type', title: '类型' },
     { field: 'description', title: '描述' },
     { field: 'illusion', title: '异体' },
-    { field: 'url', title: 'URL' },
   ],
   exportConfig: {},
   height: 'auto',
@@ -92,7 +94,15 @@ const gridOptions: VxeTableGridOptions<RowType> = {
           total: res.total
         }
       },
-    }
+    },
+  },
+  toolbarConfig: {
+    custom: true,
+    export: true,
+    refresh: true,
+    resizable: true,
+    search: true,
+    zoom: true,
   },
 };
 
