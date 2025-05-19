@@ -49,8 +49,9 @@ async function onDelete(row: RowType) {
     });
 
     const res = await UserApi.deleteUser(row.uid);
-    if (res.code === 0) {
+    if (res) {
       ElMessage.success('删除成功');
+      onRefresh();
     } else {
       ElMessage.error(res.message || '删除失败');
     }
@@ -60,7 +61,9 @@ async function onDelete(row: RowType) {
 }
 
 function onRefresh() {
+  gridApi.query();
 }
+
 
 function onCreate() {
   formDrawerApi.setData({}).open();
@@ -148,7 +151,7 @@ const gridOptions: VxeTableGridOptions<RowType> = {
           pageSize: page.pageSize,
           ...formValues,
         });
-        ElMessage.success(`加载成功`);
+        // ElMessage.success(`加载成功`);
         const list:  any = {};
         list.items = res.records;
         list.total = res.total;
@@ -170,7 +173,7 @@ const gridOptions: VxeTableGridOptions<RowType> = {
   },
 };
 
-const [Grid] = useVbenVxeGrid({
+const [Grid, gridApi] = useVbenVxeGrid({
   formOptions,
   gridOptions,
 });
