@@ -3,12 +3,9 @@ package fun.yozora.admin.web.controller;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import fun.yozora.admin.web.dto.UpdateUserInfoDTO;
 import fun.yozora.admin.web.dto.UserInfoDTO;
 import fun.yozora.admin.domain.entity.User;
-import fun.yozora.admin.core.service.PermissionService;
 import fun.yozora.admin.core.service.UserService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,24 +16,35 @@ public class UserController
     @Autowired
     private UserService userService;
 
+    @PostMapping()
+    public SaResult createUser(@RequestBody User user)
+    {
+        if (userService.save(user))
+            return SaResult.ok("创建成功");
+        else
+            return SaResult.error("创建失败");
+    }
+
     @GetMapping(value = "/all")
     public SaResult getUsers(
             @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "20") Integer pageSize
-            )
+            @RequestParam(defaultValue = "20") Integer pageSize)
     {
-
         return SaResult.data(userService.page(new Page<>(page, pageSize)));
     }
 
+    @PutMapping(value = "/{id}")
+    public SaResult updateUser(@PathVariable String id, @RequestBody User user)
+    {
+        user.setId(id);
+        return SaResult.data(userService.updateById(user));
+    }
     @DeleteMapping(value = "/{id}")
     public SaResult deleteUser(@PathVariable String id)
     {
         System.out.println(id);
         return SaResult.data(userService.removeById(id));
     }
-
-
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public SaResult doRegister(String username, String password, String email)
     {
@@ -57,26 +65,6 @@ public class UserController
             return SaResult.error("注册失败");
     }
 
-
-    @RequestMapping(value = "/update",method = RequestMethod.PUT)
-    public SaResult update(@RequestBody UpdateUserInfoDTO user)
-    {
-        if (!StpUtil.isLogin())
-            return SaResult.error("未登录").setCode(401);
-
-        String id = StpUtil.getLoginId().toString();
-        User dbUser = userService.getUserByUid(id);
-
-        if (dbUser == null)
-            return SaResult.error("用户不存在");
-
-        BeanUtils.copyProperties(user, dbUser);
-
-        if (userService.updateUser(dbUser))
-            return SaResult.ok("更新成功");
-        else
-            return SaResult.error("更新失败");
-    }
 
     @RequestMapping(value = "/isLogin",method = RequestMethod.GET)
     public SaResult isLogin()
