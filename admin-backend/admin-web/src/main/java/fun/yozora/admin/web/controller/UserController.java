@@ -50,7 +50,7 @@ public class UserController
 
         User user = new User(username,  password, email);
 
-        if (userService.addUser(user))
+        if (userService.save(user))
             return SaResult.ok("注册成功");
         else
             return SaResult.error("注册失败");
