@@ -125,7 +125,7 @@ const gridOptions: VxeTableGridOptions<RowType> = {
         )
       }
     },
-    { field: 'uid', title: 'ID', width: 200 },
+    { field: 'uid', title: 'ID', width: 50 },
     { field: 'username', title: '用户名', width: 100 },
     { field: 'nickname', title: '昵称', width: 100 },
     { field: 'email', title: '电子邮箱', width: 150 },
@@ -182,6 +182,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
 
 <template>
   <Page auto-content-height>
+    <FormDrawer />
     <Grid>
       <template #toolbar-tools>
         <el-button type="primary" @click="onCreate">新增</el-button>
