@@ -23,7 +23,7 @@ public class UserInfoDTO {
     private String realName;
 
     public UserInfoDTO(User user) {
-        this.id = user.getId();
+        this.id = user.getUid();
         this.username = user.getUsername();
         this.nickname = user.getNickname();
         this.email = user.getEmail();

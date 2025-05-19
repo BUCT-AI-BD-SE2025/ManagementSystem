@@ -22,7 +22,7 @@ public class User implements Serializable
      * 
      */
     @TableId
-    private String id;
+    private String uid;
 
     /**
      * 登陆用用户名
@@ -89,7 +89,7 @@ public class User implements Serializable
 
     public User(String username, String password, String email)
     {
-        this.id = Generators.timeBasedGenerator().generate().toString(); // UUID v7
+        this.uid = Generators.timeBasedGenerator().generate().toString(); // UUID v7
         this.username = username;
         this.password = password;
         this.email = email;

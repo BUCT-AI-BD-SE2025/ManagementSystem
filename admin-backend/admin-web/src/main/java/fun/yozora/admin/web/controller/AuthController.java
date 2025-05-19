@@ -62,7 +62,7 @@ public class AuthController
             userService.updateIp(dbUser);
             userService.updateLastLogin(dbUser);
 
-            StpUtil.login(dbUser.getId());
+            StpUtil.login(dbUser.getUid());
             String token = StpUtil.getTokenValue();
             return SaResult.ok("登录成功").setData(Map.of("accessToken",token));
         }
