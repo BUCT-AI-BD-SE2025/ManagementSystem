@@ -2,6 +2,7 @@ package fun.yozora.admin.web.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.yozora.admin.web.dto.UpdateUserInfoDTO;
 import fun.yozora.admin.web.dto.UserInfoDTO;
 import fun.yozora.admin.domain.entity.User;
@@ -9,10 +10,7 @@ import fun.yozora.admin.core.service.PermissionService;
 import fun.yozora.admin.core.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -23,6 +21,17 @@ public class UserController
 
     @Autowired
     private PermissionService permissionService;
+
+    @GetMapping(value = "/all")
+    public SaResult getUsers(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "20") Integer pageSize
+            )
+    {
+
+        return SaResult.data(userService.page(new Page<>(page, pageSize)));
+    }
+
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public SaResult doRegister(String username, String password, String email)
