@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -23,7 +22,7 @@ public class User implements Serializable
      * 
      */
     @TableId
-    private String uid;
+    private String id;
 
     /**
      * 登陆用用户名
@@ -90,7 +89,7 @@ public class User implements Serializable
 
     public User(String username, String password, String email)
     {
-        this.uid = Generators.timeBasedGenerator().generate().toString(); // UUID v7
+        this.id = Generators.timeBasedGenerator().generate().toString(); // UUID v7
         this.username = username;
         this.password = password;
         this.email = email;

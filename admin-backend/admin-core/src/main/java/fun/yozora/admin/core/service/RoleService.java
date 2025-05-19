@@ -11,5 +11,5 @@ import java.util.List;
 * @createDate 2025-05-12 00:32:38
 */
 public interface RoleService extends IService<Role> {
-    List<Role> getRolesByUserId(String uid);
+    List<Role> getRolesByUserId(String id);
 }

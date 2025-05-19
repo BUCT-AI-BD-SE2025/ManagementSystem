@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 public class UserInfoDTO {
-    private String uid;
+    private String id;
     private String username;
     private String nickname;
     private String email;
@@ -23,7 +23,7 @@ public class UserInfoDTO {
     private String realName;
 
     public UserInfoDTO(User user) {
-        this.uid = user.getUid();
+        this.id = user.getId();
         this.username = user.getUsername();
         this.nickname = user.getNickname();
         this.email = user.getEmail();

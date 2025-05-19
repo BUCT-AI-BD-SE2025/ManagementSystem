@@ -30,8 +30,9 @@ public class UserController
     }
 
     @DeleteMapping(value = "/{id}")
-    public SaResult deleteUser(@PathVariable Integer id)
+    public SaResult deleteUser(@PathVariable String id)
     {
+        System.out.println(id);
         return SaResult.data(userService.removeById(id));
     }
 
@@ -63,8 +64,8 @@ public class UserController
         if (!StpUtil.isLogin())
             return SaResult.error("未登录").setCode(401);
 
-        String uid = StpUtil.getLoginId().toString();
-        User dbUser = userService.getUserByUid(uid);
+        String id = StpUtil.getLoginId().toString();
+        User dbUser = userService.getUserByUid(id);
 
         if (dbUser == null)
             return SaResult.error("用户不存在");
@@ -117,8 +118,8 @@ public class UserController
     {
         if (!StpUtil.isLogin())
             return SaResult.error("未登录").setCode(401);
-        String uid = StpUtil.getLoginId().toString();
-        User user = userService.getUserByUid(uid);
+        String id = StpUtil.getLoginId().toString();
+        User user = userService.getUserByUid(id);
 
         if (user == null)
             return SaResult.error("用户不存在");

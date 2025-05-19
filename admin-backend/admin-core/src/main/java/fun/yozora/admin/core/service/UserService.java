@@ -25,5 +25,5 @@ public interface UserService extends IService<User> {
 
     boolean addUser(User user);
 
-    User getUserByUid(String uid);
+    User getUserByUid(String id);
 }

@@ -11,5 +11,5 @@ import java.util.List;
 * @createDate 2025-05-12 00:32:54
 */
 public interface PermissionService extends IService<Permission> {
-    List<Permission> getAllPermissionsByUserId(String uid);
+    List<Permission> getAllPermissionsByUserId(String id);
 }
