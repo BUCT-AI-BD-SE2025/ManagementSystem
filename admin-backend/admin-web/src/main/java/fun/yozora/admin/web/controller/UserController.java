@@ -52,7 +52,7 @@ public class UserController
     {
         if (!StpUtil.isLogin())
         {
-            return SaResult.error("未登录");
+            return SaResult.error("未登录").setCode(401);
         }
 
         String uid = StpUtil.getLoginId().toString();
@@ -84,7 +84,7 @@ public class UserController
         }
         else
         {
-            return SaResult.error("未登录");
+            return SaResult.error("未登录").setCode(401);
         }
     }
 
@@ -119,7 +119,7 @@ public class UserController
     {
         if (!StpUtil.isLogin())
         {
-            return SaResult.error("未登录");
+            return SaResult.error("未登录").setCode(401);
         }
         String uid = StpUtil.getLoginId().toString();
         User user = userService.getUserByUid(uid);
