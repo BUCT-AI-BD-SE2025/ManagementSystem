@@ -19,9 +19,6 @@ public class UserController
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private PermissionService permissionService;
-
     @GetMapping(value = "/all")
     public SaResult getUsers(
             @RequestParam(defaultValue = "1") Integer page,
