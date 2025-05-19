@@ -51,28 +51,20 @@ public class UserController
     public SaResult update(@RequestBody UpdateUserInfoDTO user)
     {
         if (!StpUtil.isLogin())
-        {
             return SaResult.error("未登录").setCode(401);
-        }
 
         String uid = StpUtil.getLoginId().toString();
         User dbUser = userService.getUserByUid(uid);
 
         if (dbUser == null)
-        {
             return SaResult.error("用户不存在");
-        }
 
         BeanUtils.copyProperties(user, dbUser);
 
         if (userService.updateUser(dbUser))
-        {
             return SaResult.ok("更新成功");
-        }
         else
-        {
             return SaResult.error("更新失败");
-        }
     }
 
     @RequestMapping(value = "/isLogin",method = RequestMethod.GET)
@@ -118,17 +110,14 @@ public class UserController
     public SaResult getUserInfo()
     {
         if (!StpUtil.isLogin())
-        {
             return SaResult.error("未登录").setCode(401);
-        }
         String uid = StpUtil.getLoginId().toString();
         User user = userService.getUserByUid(uid);
 
         if (user == null)
-        {
             return SaResult.error("用户不存在");
-        }
         UserInfoDTO userInfoDTO = new UserInfoDTO(user);
+
         userInfoDTO.setPermissions(StpUtil.getRoleList());
         userInfoDTO.setRoles(StpUtil.getRoleList());
         return SaResult.data(userInfoDTO);

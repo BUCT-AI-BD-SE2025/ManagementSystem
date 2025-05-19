@@ -71,7 +71,22 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
       return config;
     },
   });
-
+  // 自定义拦截器用于处理 401 未登录错误
+  client.addResponseInterceptor({
+    fulfilled: (response) => {
+      const data = response.data;
+      if (data && data.code === 401) {
+        // 清空 Cookie 中的 satoken
+        // 可选：触发重新认证逻辑
+        doReAuthenticate();
+      }
+      return response;
+    },
+    rejected: (error) => {
+      // 处理请求错误
+      return Promise.reject(error);
+    },
+  });
   // 处理返回的响应数据格式
   client.addResponseInterceptor(
     defaultResponseInterceptor({

@@ -1,5 +1,6 @@
 package fun.yozora.admin.web.controller;
 
+import cn.dev33.satoken.util.SaResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.yozora.admin.core.service.ArtifactService;
 import fun.yozora.admin.domain.entity.Artifact;
@@ -21,10 +22,10 @@ public class ArtifactController {
      * 示例请求：/artifacts?page=1&size=20
      */
     @GetMapping
-    public Page<Artifact> getArtifacts(
+    public SaResult getArtifacts(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "20") Integer size) {
-        return artifactService.page(new Page<>(page, size));
+        return SaResult.data(artifactService.page(new Page<>(page, size)));
     }
 
     /**
