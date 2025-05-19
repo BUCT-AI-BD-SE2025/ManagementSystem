@@ -32,14 +32,18 @@ public class UserController
         return SaResult.data(userService.page(new Page<>(page, pageSize)));
     }
 
+    @DeleteMapping(value = "/{id}")
+    public SaResult deleteUser(@PathVariable Integer id)
+    {
+        return SaResult.data(userService.removeById(id));
+    }
+
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public SaResult doRegister(String username, String password, String email)
     {
         if (username==null||password==null||email==null)
-        {
             return SaResult.error("用户名或密码或邮箱不能为空");
-        }
 
         if (userService.isExistUsername(username))
             return SaResult.error("用户名已存在");
@@ -80,13 +84,9 @@ public class UserController
     public SaResult isLogin()
     {
         if (StpUtil.isLogin())
-        {
             return SaResult.ok("已登录");
-        }
         else
-        {
             return SaResult.error("未登录").setCode(401);
-        }
     }
 
     @RequestMapping(value = "/tokenInfo",method = RequestMethod.GET)
