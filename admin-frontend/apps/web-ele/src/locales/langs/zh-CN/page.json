@@ -11,8 +11,12 @@
     "analytics": "分析页",
     "workspace": "工作台"
   },
-  "artifact": {
-    "title" : "文物管理",
-    "list": "文物列表"
+  "management": {
+    "title" : "数据管理",
+    "user" : "用户管理",
+    "role" : "角色管理",
+    "permission" : "权限管理",
+    "artifact" : "文物管理"
+
   }
 }

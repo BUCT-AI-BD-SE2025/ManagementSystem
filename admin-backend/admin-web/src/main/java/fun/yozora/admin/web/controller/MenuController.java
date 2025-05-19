@@ -56,19 +56,62 @@ public class MenuController {
                 .children(List.of(analytics, workspace))
                 .build();
 
-        // 构建 文物管理页面
-        MenuDTO test = MenuDTO.builder()
-                .name("Artifact")
-                .path("/")
-                .component("/artifact/index")
+
+
+        MenuDTO user = MenuDTO.builder()
+                .name("User")
+                .path("/user")
+                .component("/management/user/index")
                 .meta(MenuMetaDTO.defaultMeta()
                         .toBuilder()
-                        .title("page.artifact.title")
-                        .noBasicLayout(true)
+                        .title("page.management.user")
                         .build())
                 .build();
 
-        return List.of(dashboard, test);
+        // 构建 文物管理页面
+        MenuDTO artifact = MenuDTO.builder()
+                .name("Artifact")
+                .path("/artifact")
+                .component("/management/artifact/index")
+                .meta(MenuMetaDTO.defaultMeta()
+                        .toBuilder()
+                        .title("page.management.artifact")
+                        .build())
+                .build();
+
+        MenuDTO permission = MenuDTO.builder()
+                .name("Permission")
+                .path("/permission")
+                .component("/management/permission/index")
+                .meta(MenuMetaDTO.defaultMeta()
+                        .toBuilder()
+                        .title("page.management.permission")
+                        .build())
+                .build();
+
+        MenuDTO role = MenuDTO.builder()
+                .name("Role")
+                .path("/role")
+                .component("/management/role/index")
+                .meta(MenuMetaDTO.defaultMeta()
+                        .toBuilder()
+                        .title("page.management.role")
+                        .build())
+                .build();
+
+        MenuDTO management = MenuDTO.builder()
+                .name("Management")
+                .path("/")
+                .redirect("/user")
+                .meta(MenuMetaDTO.defaultMeta()
+                        .toBuilder()
+                        .title("page.management.title")
+                        .order(-1)
+                        .build())
+                .children(List.of(user, role, permission, artifact))
+                .build();
+
+        return List.of(dashboard, management);
     }
 
 }
