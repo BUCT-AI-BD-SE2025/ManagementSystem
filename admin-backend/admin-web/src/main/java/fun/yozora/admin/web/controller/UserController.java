@@ -2,12 +2,17 @@ package fun.yozora.admin.web.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.uuid.Generators;
 import fun.yozora.admin.web.dto.UserInfoDTO;
 import fun.yozora.admin.domain.entity.User;
 import fun.yozora.admin.core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/user")
@@ -19,6 +24,7 @@ public class UserController
     @PostMapping()
     public SaResult createUser(@RequestBody User user)
     {
+        user.setUid(Generators.timeBasedGenerator().generate().toString());
         if (userService.save(user))
             return SaResult.ok("创建成功");
         else
@@ -28,15 +34,100 @@ public class UserController
     @GetMapping(value = "/all")
     public SaResult getUsers(
             @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "20") Integer pageSize)
+            @RequestParam(defaultValue = "20") Integer pageSize,
+            @RequestParam(required = false) String uid,
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) String nickname,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) String sex,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime loginStartTime,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime loginEndTime
+    )
     {
-        return SaResult.data(userService.page(new Page<>(page, pageSize)));
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        // UID精确匹配
+        if(uid !=null&&!uid.isEmpty())
+        {
+            queryWrapper.eq("uid", uid);
+        }
+        // 用户名模糊匹配
+        if(username !=null&&!username.isEmpty())
+
+        {
+            queryWrapper.like("username", username);
+        }
+
+        // 昵称模糊匹配
+        if(nickname !=null&&!nickname.isEmpty())
+
+        {
+            queryWrapper.like("nickname", nickname);
+        }
+
+        // 邮箱模糊匹配
+        if(email !=null&&!email.isEmpty())
+
+        {
+            queryWrapper.like("email", email);
+        }
+
+        // 手机号模糊匹配
+        if(phone !=null&&!phone.isEmpty())
+
+        {
+            queryWrapper.like("phone", phone);
+        }
+
+        // 状态精确匹配
+        if(status !=null&&!status.isEmpty())
+
+        {
+            queryWrapper.eq("status", status);
+        }
+
+        //  性别精确匹配
+        if(sex !=null&&!sex.isEmpty())
+
+        {
+            queryWrapper.eq("sex", sex);
+        }
+
+        // 注册时间范围
+        if(startTime !=null)
+
+        {
+            queryWrapper.ge("created_at", startTime);
+        }
+        if(endTime !=null)
+
+        {
+            queryWrapper.le("created_at", endTime);
+        }
+
+        // 登录时间范围
+        if(loginStartTime !=null)
+
+        {
+            queryWrapper.ge("last_login", loginStartTime);
+        }
+        if(loginEndTime !=null)
+
+        {
+            queryWrapper.le("last_login", loginEndTime);
+        }
+
+        Page<User> userPage = userService.page(new Page<>(page, pageSize), queryWrapper);
+        return SaResult.data(userPage);
     }
 
-    @PutMapping(value = "/{id}")
-    public SaResult updateUser(@PathVariable String id, @RequestBody User user)
+    @PutMapping(value = "/{uid}")
+    public SaResult updateUser(@PathVariable String uid, @RequestBody User user)
     {
-        user.setId(id);
+        user.setUid(uid);
         return SaResult.data(userService.updateById(user));
     }
     @DeleteMapping(value = "/{id}")
