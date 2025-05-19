@@ -49,8 +49,9 @@ async function onDelete(row: RowType) {
     });
 
     const res = await UserApi.deleteUser(row.uid);
-    if (res.code === 0) {
+    if (res) {
       ElMessage.success('删除成功');
+      onRefresh();
     } else {
       ElMessage.error(res.message || '删除失败');
     }
@@ -60,7 +61,9 @@ async function onDelete(row: RowType) {
 }
 
 function onRefresh() {
+  gridApi.query();
 }
+
 
 function onCreate() {
   formDrawerApi.setData({}).open();
@@ -122,7 +125,7 @@ const gridOptions: VxeTableGridOptions<RowType> = {
         )
       }
     },
-    { field: 'uid', title: 'ID', width: 200 },
+    { field: 'uid', title: 'ID', width: 50 },
     { field: 'username', title: '用户名', width: 100 },
     { field: 'nickname', title: '昵称', width: 100 },
     { field: 'email', title: '电子邮箱', width: 150 },
@@ -148,7 +151,7 @@ const gridOptions: VxeTableGridOptions<RowType> = {
           pageSize: page.pageSize,
           ...formValues,
         });
-        ElMessage.success(`加载成功`);
+        // ElMessage.success(`加载成功`);
         const list:  any = {};
         list.items = res.records;
         list.total = res.total;
@@ -170,7 +173,7 @@ const gridOptions: VxeTableGridOptions<RowType> = {
   },
 };
 
-const [Grid] = useVbenVxeGrid({
+const [Grid, gridApi] = useVbenVxeGrid({
   formOptions,
   gridOptions,
 });
@@ -179,6 +182,7 @@ const [Grid] = useVbenVxeGrid({
 
 <template>
   <Page auto-content-height>
+    <FormDrawer />
     <Grid>
       <template #toolbar-tools>
         <el-button type="primary" @click="onCreate">新增</el-button>

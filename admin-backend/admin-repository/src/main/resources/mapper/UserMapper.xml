@@ -19,12 +19,12 @@
     <update id="updateLastLogin">
         UPDATE user
         SET last_login = #{lastLogin}
-        WHERE id = #{id}
+        WHERE uid = #{uid}
     </update>
 
     <update id="updateIp">
         UPDATE user
         SET ip = #{ip}
-        WHERE id = #{id}
+        WHERE uid = #{uid}
     </update>
 </mapper>
