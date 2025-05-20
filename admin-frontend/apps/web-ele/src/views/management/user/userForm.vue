@@ -8,7 +8,6 @@ import { useVbenForm } from '#/adapter/form';
 import { useVbenDrawer } from '@vben/common-ui';
 import { $t } from '#/locales';
 import {UserApi} from "#/api/management/user";
-import {ElText} from "element-plus";
 
 const emits = defineEmits(['success']);
 
@@ -17,11 +16,6 @@ const id = ref<string>();
 
 const [Form, formApi] = useVbenForm({
   schema: [
-    {
-      component: ElText,
-      fieldName: 'uid',
-      label: '用户ID',
-    },
     {
       component: 'Input',
       fieldName: 'username',

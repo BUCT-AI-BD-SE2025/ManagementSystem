@@ -95,7 +95,6 @@ public class UserController
     @DeleteMapping(value = "/{id}")
     public SaResult deleteUser(@PathVariable String id)
     {
-        System.out.println(id);
         return SaResult.data(userService.removeById(id));
     }
     @DeleteMapping(value = "/batch")

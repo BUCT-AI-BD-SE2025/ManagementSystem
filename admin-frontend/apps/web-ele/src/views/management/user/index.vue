@@ -14,6 +14,7 @@ import getUserList = UserApi.getUserList;
 
 import UserForm from "#/views/management/user/userForm.vue";
 import type {User} from "#/types/User";
+import {$t} from "@vben/locales";
 
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: UserForm,
@@ -24,6 +25,7 @@ interface RowType extends User{}
 
 function onEdit(row: RowType) {
   formDrawerApi.setData(row).open()
+  onRefresh();
 }
 
 async function onDelete(row: RowType) {
@@ -89,6 +91,7 @@ function onRefresh() {
 
 function onCreate() {
   formDrawerApi.setData({}).open();
+  onRefresh()
 }
 
 const formOptions: VbenFormProps = {
@@ -273,8 +276,12 @@ const [Grid, gridApi] = useVbenVxeGrid({
     <FormDrawer />
     <Grid>
       <template #toolbar-tools>
-        <el-button type="primary" @click="onCreate">新增</el-button>
-        <el-button type="danger" @click="onBatchDelete">批量删除</el-button>
+        <el-button type="primary" @click="onCreate">
+          {{ $t('common.create') }}
+        </el-button>
+        <el-button type="danger" @click="onBatchDelete">
+          {{ $t('common.delete') }}
+        </el-button>
       </template>
     </Grid>
   </Page>

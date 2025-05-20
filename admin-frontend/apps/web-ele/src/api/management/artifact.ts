@@ -25,4 +25,8 @@ export namespace ArtifactApi {
     return requestClient.delete(`/artifacts/${id}`);
   }
 
+  export async function batchDeleteArtifact(ids: string[]) {
+    return requestClient.delete('/artifacts/batch', {data: ids});
+  }
+
 }

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { User } from '#/types/User';
 
 import {computed, ref} from 'vue';
 
@@ -8,19 +7,15 @@ import { useVbenForm } from '#/adapter/form';
 import { useVbenDrawer } from '@vben/common-ui';
 import { $t } from '#/locales';
 import {ArtifactApi} from "#/api/management/artifact";
+import type {Artifact} from "#/types/Artifact";
 
 const emits = defineEmits(['success']);
 
-const formData = ref<User>();
+const formData = ref<Artifact>();
 const id = ref<string>();
 
 const [Form, formApi] = useVbenForm({
   schema: [
-    {
-      component: 'Input',
-      fieldName: 'id',
-      label: 'ID',
-    },
     {
       component: 'Input',
       fieldName: 'originId',
@@ -114,11 +109,11 @@ const [Drawer, drawerApi] = useVbenDrawer({
   },
   onOpenChange(isOpen) {
     if (isOpen) {
-      const data = drawerApi.getData<User>();
+      const data = drawerApi.getData<Artifact>();
       formApi.resetForm();
       if (data) {
         formData.value = data;
-        id.value = data.uid;
+        id.value = data.id;
         formApi.setValues(data);
       } else {
         id.value = undefined;
@@ -129,7 +124,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
 // 抽屉标题动态显示“新增”或“编辑”
 const getDrawerTitle = computed(() => {
-  return id.value ? $t('common.edit', $t('system.user.name')) : $t('common.create', $t('system.user.name'));
+  return id.value ? ($t('common.edit')) : ($t('common.create'));
 });
 </script>
 

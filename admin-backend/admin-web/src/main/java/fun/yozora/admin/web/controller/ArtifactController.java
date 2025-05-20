@@ -8,6 +8,8 @@ import fun.yozora.admin.domain.entity.Artifact;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/artifacts")
 public class ArtifactController {
@@ -39,22 +41,31 @@ public class ArtifactController {
     )
     {
         QueryWrapper<Artifact> queryWrapper = new QueryWrapper<>();
+        //  ID精确匹配
         if (id !=null&&!id.isEmpty())
             queryWrapper.eq("id", id);
+        //  原始ID精确匹配
         if(originId !=null&&!originId.isEmpty())
             queryWrapper.eq("origin_id", originId);
+        //  标题模糊匹配
         if(title !=null&&!title.isEmpty())
            queryWrapper.like("title", title);
+        //  地点模糊匹配
         if(location !=null&&!location.isEmpty())
             queryWrapper.like("location", location);
+        //  朝代模糊匹配
         if(period !=null&&!period.isEmpty())
             queryWrapper.like("period", period);
+        //  材质模糊匹配
         if(material !=null&&!material.isEmpty())
             queryWrapper.like("material", material);
+        //  尺寸模糊匹配
         if (measurement !=null&&!measurement.isEmpty())
             queryWrapper.like("measurement", measurement);
+        //  作者模糊匹配
         if(artist !=null&&!artist.isEmpty())
             queryWrapper.like("artist", artist);
+
         if(creditLine !=null&&!creditLine.isEmpty())
             queryWrapper.like("credit_line", creditLine);
         if(type !=null&&!type.isEmpty())
@@ -71,32 +82,40 @@ public class ArtifactController {
      * 根据 ID 查询文物
      */
     @GetMapping("/{id}")
-    public Artifact getArtifactById(@PathVariable Integer id) {
-        return artifactService.getById(id);
+    public SaResult getArtifactById(@PathVariable Integer id) {
+        return SaResult.data(artifactService.getById(id));
     }
 
     /**
      * 新增文物
      */
     @PostMapping
-    public boolean createArtifact(@RequestBody Artifact artifact) {
-        return artifactService.save(artifact);
+    public SaResult createArtifact(@RequestBody Artifact artifact) {
+        return SaResult.data(artifactService.save(artifact));
     }
 
     /**
      * 更新文物
      */
     @PutMapping("/{id}")
-    public boolean updateArtifact(@PathVariable Integer id, @RequestBody Artifact artifact) {
+    public SaResult updateArtifact(@PathVariable Integer id, @RequestBody Artifact artifact) {
         artifact.setId(id);
-        return artifactService.updateById(artifact);
+        return SaResult.data(artifactService.updateById(artifact));
     }
 
     /**
      * 删除文物
      */
     @DeleteMapping("/{id}")
-    public boolean deleteArtifact(@PathVariable Integer id) {
-        return artifactService.removeById(id);
+    public SaResult deleteArtifact(@PathVariable Integer id) {
+        return SaResult.data(artifactService.removeById(id));
+    }
+
+    /**
+     * 批量删除文物
+     */
+    @DeleteMapping("/batch")
+    public SaResult deleteArtifacts(@RequestBody List<Integer> ids) {
+        return SaResult.data(artifactService.removeByIds(ids));
     }
 }
