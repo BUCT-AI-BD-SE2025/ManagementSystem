@@ -1,14 +1,4 @@
 /**
- * 用户状态枚举（与后端 UserStatus 枚举对应）
- */
-
-export enum UserStatus {
-  Active = 0,
-  Inactive = 1,
-  Locked = 2,
-}
-
-/**
  * 用户信息接口
  */
 export interface User {
@@ -60,7 +50,7 @@ export interface User {
   /**
    * 用户状态
    */
-  status: UserStatus;
+  status: string;
 
   /**
    * 最后登录时间

@@ -51,75 +51,35 @@ public class UserController
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         // UID精确匹配
         if(uid !=null&&!uid.isEmpty())
-        {
             queryWrapper.eq("uid", uid);
-        }
         // 用户名模糊匹配
         if(username !=null&&!username.isEmpty())
-
-        {
             queryWrapper.like("username", username);
-        }
-
         // 昵称模糊匹配
         if(nickname !=null&&!nickname.isEmpty())
-
-        {
             queryWrapper.like("nickname", nickname);
-        }
-
         // 邮箱模糊匹配
         if(email !=null&&!email.isEmpty())
-
-        {
             queryWrapper.like("email", email);
-        }
-
         // 手机号模糊匹配
         if(phone !=null&&!phone.isEmpty())
-
-        {
             queryWrapper.like("phone", phone);
-        }
-
         // 状态精确匹配
         if(status !=null&&!status.isEmpty())
-
-        {
             queryWrapper.eq("status", status);
-        }
-
         //  性别精确匹配
         if(sex !=null&&!sex.isEmpty())
-
-        {
             queryWrapper.eq("sex", sex);
-        }
-
         // 注册时间范围
         if(startTime !=null)
-
-        {
             queryWrapper.ge("created_at", startTime);
-        }
         if(endTime !=null)
-
-        {
             queryWrapper.le("created_at", endTime);
-        }
-
         // 登录时间范围
         if(loginStartTime !=null)
-
-        {
             queryWrapper.ge("last_login", loginStartTime);
-        }
         if(loginEndTime !=null)
-
-        {
             queryWrapper.le("last_login", loginEndTime);
-        }
-
         Page<User> userPage = userService.page(new Page<>(page, pageSize), queryWrapper);
         return SaResult.data(userPage);
     }
@@ -130,6 +90,7 @@ public class UserController
         user.setUid(uid);
         return SaResult.data(userService.updateById(user));
     }
+
     @DeleteMapping(value = "/{id}")
     public SaResult deleteUser(@PathVariable String id)
     {

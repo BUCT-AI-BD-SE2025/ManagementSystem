@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type { User } from '#/types/User';
 
-import {computed, h, ref} from 'vue';
+import {computed, ref} from 'vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { ElInput, ElSelect, ElOption, ElDatePicker } from 'element-plus';
 
 import { useVbenDrawer } from '@vben/common-ui';
 import { $t } from '#/locales';
 import {UserApi} from "#/api/management/user";
+import {ElText} from "element-plus";
 
 const emits = defineEmits(['success']);
 
@@ -18,17 +18,22 @@ const id = ref<string>();
 const [Form, formApi] = useVbenForm({
   schema: [
     {
-      component: ElInput,
+      component: ElText,
+      fieldName: 'uid',
+      label: '用户ID',
+    },
+    {
+      component: 'Input',
       fieldName: 'username',
       label: '用户名',
     },
     {
-      component: ElInput,
+      component: 'Input',
       fieldName: 'nickname',
       label: '昵称',
     },
     {
-      component: ElInput,
+      component: 'Input',
       fieldName: 'password',
       label: '密码',
       componentProps: {
@@ -37,37 +42,40 @@ const [Form, formApi] = useVbenForm({
       },
     },
     {
-      component: ElInput,
+      component: 'Input',
       fieldName: 'email',
       label: '电子邮箱',
     },
     {
-      component: ElInput,
+      component: 'Input',
       fieldName: 'phone',
       label: '手机号',
     },
     {
-      component: ElSelect,
+      component: 'Select',
+      fieldName: 'sex',
+      label: '性别',
+      componentProps: {
+        options: [
+          { label: '男', value: '0' },
+          { label: '女', value: '1' },
+          { label: '未知', value: '2' },
+        ],
+      },
+    },
+    {
+      component: 'Select',
       fieldName: 'status',
       label: '状态',
       componentProps: {
-        style: { width: '100%' },
         options: [
-          {
-            label: '启用',
-            value: 'ACTIVE',
-          },
-          {
-            label: '禁用',
-            value: 'LOCKED',
-          },
-          {
-            label: '删除',
-            value: 'DELETED',
-          },
+          { label: '激活', value: 'ACTIVE' },
+          { label: '锁定', value: 'LOCKED' },
+          { label: '删除', value: 'DELETED'},
         ],
-      }
-    },
+      },
+    }
+
   ],
   showDefaultActions: false,
 });
