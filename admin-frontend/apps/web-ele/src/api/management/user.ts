@@ -28,7 +28,7 @@ export namespace UserApi {
    * 创建新用户
    * @param data 用户数据
    */
-  export async function createUser(data: Omit<User, 'uid' | 'createdAt' | 'updatedAt'> & {
+  export async function createUser(data: & {
     uid?: string
   }) {
     return requestClient.post('/user', data);
@@ -49,5 +49,8 @@ export namespace UserApi {
    */
   export async function deleteUser(uid: string) {
     return requestClient.delete(`/user/${uid}`);
+  }
+  export async function batchDeleteUser(uids: string[]) {
+    return requestClient.delete('/user/batch', {data: uids});
   }
 }

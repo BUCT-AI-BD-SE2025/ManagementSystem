@@ -13,27 +13,14 @@ import {UserApi} from "#/api/management/user";
 import getUserList = UserApi.getUserList;
 
 import UserForm from "#/views/management/user/userForm.vue";
+import type {User} from "#/types/User";
 
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: UserForm,
   destroyOnClose: true,
 })
 
-interface RowType {
-  uid: string;
-  username: string;
-  nickname: string;
-  password: string;
-  email: string;
-  phone: string;
-  sex: string;
-  ip: string;
-  avatarUrl: string;
-  status: string;
-  lastLogin: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
+interface RowType extends User{}
 
 function onEdit(row: RowType) {
   formDrawerApi.setData(row).open()
@@ -53,6 +40,42 @@ async function onDelete(row: RowType) {
       onRefresh();
     } else {
       ElMessage.error(res.message || '删除失败');
+    }
+  } catch (error) {
+    ElMessage.warning('操作已取消');
+  }
+}
+
+
+async function onBatchDelete() {
+  const selectedRows = await gridApi.grid.getCheckboxRecords();
+  if (!selectedRows.length) {
+    ElMessage.warning('请至少选择一条记录');
+    return;
+  }
+
+  try {
+    await ElMessageBox.confirm(
+      `确定要删除选中的 ${selectedRows.length} 位用户？`,
+      '提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    );
+
+    // 提取所有 id
+    const ids = selectedRows.map(row => row.id);
+
+    // 发送请求
+    const res = await UserApi.batchDeleteUser(ids);
+
+    if (res) {
+      ElMessage.success('批量删除成功');
+      onRefresh();
+    } else {
+      ElMessage.error(res.message || '批量删除失败');
     }
   } catch (error) {
     ElMessage.warning('操作已取消');
@@ -188,7 +211,7 @@ const gridOptions: VxeTableGridOptions<RowType> = {
     { field: 'phone', title: '手机号',width: 150 },
     { field: 'sex', title: '性别',width: 50,
       formatter: ({ cellValue }) =>
-        cellValue === '0' ? '男' :
+      cellValue === '0' ? '男' :
       cellValue === '1' ? '女' : '未知',
     },
     { field: 'ip', title: 'IP',width: 150 },
@@ -251,6 +274,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
     <Grid>
       <template #toolbar-tools>
         <el-button type="primary" @click="onCreate">新增</el-button>
+        <el-button type="danger" @click="onBatchDelete">批量删除</el-button>
       </template>
     </Grid>
   </Page>

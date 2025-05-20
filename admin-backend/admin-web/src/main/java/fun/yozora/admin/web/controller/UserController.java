@@ -13,6 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -97,6 +98,12 @@ public class UserController
         System.out.println(id);
         return SaResult.data(userService.removeById(id));
     }
+    @DeleteMapping(value = "/batch")
+    public SaResult deleteUsers(@RequestBody List<String> ids)
+    {
+        return SaResult.data(userService.removeBatchByIds(ids));
+    }
+
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public SaResult doRegister(String username, String password, String email)
     {
