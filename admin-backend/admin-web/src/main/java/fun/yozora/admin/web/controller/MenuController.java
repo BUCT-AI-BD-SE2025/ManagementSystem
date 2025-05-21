@@ -111,7 +111,37 @@ public class MenuController {
                 .children(List.of(user, role, permission, artifact))
                 .build();
 
-        return List.of(dashboard, management);
+        MenuDTO loginLog  = MenuDTO.builder()
+                .name("LoginLog")
+                .path("/loginLog")
+                .component("/log/loginLog/index")
+                .meta(MenuMetaDTO.defaultMeta()
+                        .toBuilder()
+                        .title("page.log.loginLog")
+                        .build())
+                .build();
+        MenuDTO operationLog = MenuDTO.builder()
+                .name("OperationLog")
+                .path("/operationLog")
+                .component("/log/operationLog/index")
+                .meta(MenuMetaDTO.defaultMeta()
+                        .toBuilder()
+                        .title("page.log.operationLog")
+                        .build())
+                .build();
+        MenuDTO log = MenuDTO.builder()
+                .name("Log")
+                .path("/")
+                .redirect("/loginLog")
+                .meta(MenuMetaDTO.defaultMeta()
+                        .toBuilder()
+                        .title("page.log.title")
+                        .order(-1)
+                        .build())
+                .children(List.of(loginLog, operationLog))
+                .build();
+
+        return List.of(dashboard, management, log);
     }
 
 }
