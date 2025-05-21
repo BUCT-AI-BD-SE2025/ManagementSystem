@@ -53,7 +53,7 @@ public class MenuController {
                         .title("page.dashboard.title")
                         .order(-1)
                         .build())
-                .children(List.of(analytics, workspace))
+                .children(List.of(analytics))
                 .build();
 
 
