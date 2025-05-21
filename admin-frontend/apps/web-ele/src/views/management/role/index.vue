@@ -7,11 +7,11 @@ import { Page, useVbenDrawer } from '@vben/common-ui';
 import { ElButton, ElImage } from 'element-plus';
 
 import type  { OnActionClickParams} from "#/adapter/vxe-table";
-import {ArtifactApi} from "#/api/management/artifact";
-import getArtifactList = ArtifactApi.getArtifactList;
+import {RoleApi} from "#/api/management/role";
+import getArtifactList = RoleApi.getRoleList;
 
 import Form from "./form.vue";
-import type {Artifact as DataType} from "#/types/Artifact";
+import type { Role as DataType } from '#/types/Role';
 import {$t} from "@vben/locales";
 
 import { useColumns } from "./data";
@@ -21,7 +21,9 @@ import {useBaseCRUD} from "#/hooks/base/useBaseCRUD";
 
 
 
-interface RowType extends DataType{}
+interface RowType extends DataType{
+  id: string;
+}
 
 
 
@@ -42,27 +44,26 @@ const [Grid, gridApi] = useVbenVxeGrid({
   formOptions,
   gridOptions,
 });
-
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: Form,
   destroyOnClose: true,
   onClosed: async () => {await gridApi.query()},
 })
-
 const { handleDelete, handleBatchDelete, handleCreate, handleEdit } = useBaseCRUD({
   api: {
-    deleteItem: ArtifactApi.deleteArtifact,
-    batchDeleteItems: ArtifactApi.batchDeleteArtifact,
+    deleteItem: RoleApi.deleteRole,
+    batchDeleteItems: RoleApi.batchDeleteRole,
   },
   gridApi: gridApi,
   formDrawerApi,
+  idField: 'roleId',
 })
 
 
 
 function onActionClick(e: OnActionClickParams<RowType>) {
   const { code, row } = e;
-
+  row.id = row.roleId;
   switch (code) {
     case 'edit':
       handleEdit(row)

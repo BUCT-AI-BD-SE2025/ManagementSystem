@@ -6,11 +6,11 @@ import { useVbenForm } from '#/adapter/form';
 
 import { useVbenDrawer } from '@vben/common-ui';
 import { $t } from '#/locales';
-import {ArtifactApi} from "#/api/management/artifact";
-
+import {RoleApi} from "#/api/management/role";
 import type {Artifact} from "#/types/Artifact";
 import {useFormSchema} from "./data";
 
+import {ElMessage} from "element-plus";
 const emits = defineEmits(['success']);
 
 const formData = ref<Artifact>();
@@ -29,18 +29,20 @@ const [Drawer, drawerApi] = useVbenDrawer({
     const values = await formApi.getValues();
 
     drawerApi.lock();
-
-    if (id.value) {
-      // 更新用户
-      await ArtifactApi.updateArtifact(id.value, values);
-      emits('success');
-      await drawerApi.close();
-    } else {
-      // 创建用户
-      await ArtifactApi.createArtifact(values);
+    try {
+      if (id.value) {
+        await RoleApi.updateRole(id.value, values);
+      } else {
+        await RoleApi.createRole(values);
+      }
+    } catch (e){
+      ElMessage.error("提交失败，请重试");
+    } finally {
+      drawerApi.unlock();
     }
+
     emits('success');
-    await drawerApi.close();
+    drawerApi.close();
   },
   onOpenChange(isOpen) {
     if (isOpen) {
