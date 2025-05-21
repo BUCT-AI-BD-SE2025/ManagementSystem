@@ -4,7 +4,7 @@ export function useBaseCRUD<T, ID = string | number>({
   api,
   gridApi,
   formDrawerApi,
-  idField = 'id',
+  idField = 'id' as keyof T,
 }: {
   api: {
     deleteItem: (id: ID) => Promise<any>;
@@ -53,7 +53,7 @@ export function useBaseCRUD<T, ID = string | number>({
         cancelButtonText: '取消',
         type: 'warning',
       })
-      const ids = selectedRows.map(row => row[idField as keyof T] as ID)
+      const ids = selectedRows.map((row: T) => row[idField as keyof T] as ID)
       const res = await api.batchDeleteItems(ids)
 
       if (res) {

@@ -39,7 +39,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     }
 
     emits('success');
-    drawerApi.close();
+    await drawerApi.close();
   },
   onOpenChange(isOpen) {
     if (isOpen) {

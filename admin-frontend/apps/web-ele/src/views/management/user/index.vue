@@ -20,10 +20,7 @@ import {$t} from "@vben/locales";
 import {useColumns, useGridSchema} from "./data";
 import {useBaseGridOptions} from "#/hooks/base/useBaseGridOptions";
 
-const [FormDrawer, formDrawerApi] = useVbenDrawer({
-  connectedComponent: From,
-  destroyOnClose: true,
-})
+
 
 interface RowType extends User{
   id: string;
@@ -41,7 +38,7 @@ const formOptions: VbenFormProps = {
   submitOnEnter: false,
 };
 
-const gridOptions: VxeTableGridOptions = useBaseGridOptions(useColumns(), UserApi.getUserList(),
+const gridOptions: VxeTableGridOptions = useBaseGridOptions(useColumns(), UserApi.getUserList,
   {
     proxyConfig: {
       ajax: {
@@ -74,6 +71,11 @@ const [Grid, gridApi] = useVbenVxeGrid({
   gridOptions,
 });
 
+const [FormDrawer, formDrawerApi] = useVbenDrawer({
+  connectedComponent: From,
+  destroyOnClose: true,
+  onClosed: async () => {await gridApi.query()},
+})
 const { handleDelete, handleBatchDelete, handleCreate, handleEdit } = useBaseCRUD<User, string>({
   api: {
     deleteItem: UserApi.deleteUser,
@@ -124,7 +126,7 @@ function onActionClick(e: OnActionClickParams<RowType>) {
         </ElButton>
       </template>
       <template #image-url="{ row }">
-        <ElImage :src="row.image" height="30px" width="30px" lazy/>
+        <ElImage :src="row.avatarUrl" height="30px" width="30px" lazy/>
       </template>
     </Grid>
   </Page>

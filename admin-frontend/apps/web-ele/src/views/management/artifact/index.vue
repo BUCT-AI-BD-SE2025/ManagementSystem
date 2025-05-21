@@ -19,10 +19,7 @@ import {useGridSchema} from "./data";
 import {useBaseGridOptions} from "#/hooks/base/useBaseGridOptions";
 import {useBaseCRUD} from "#/hooks/base/useBaseCRUD";
 
-const [FormDrawer, formDrawerApi] = useVbenDrawer({
-  connectedComponent: Form,
-  destroyOnClose: true,
-})
+
 
 interface RowType extends DataType{}
 
@@ -46,6 +43,12 @@ const [Grid, gridApi] = useVbenVxeGrid({
   gridOptions,
 });
 
+const [FormDrawer, formDrawerApi] = useVbenDrawer({
+  connectedComponent: Form,
+  destroyOnClose: true,
+  onClosed: async () => {await gridApi.query()},
+})
+
 const { handleDelete, handleBatchDelete, handleCreate, handleEdit } = useBaseCRUD({
   api: {
     deleteItem: ArtifactApi.deleteArtifact,
@@ -65,7 +68,7 @@ function onActionClick(e: OnActionClickParams<RowType>) {
       handleEdit(row)
       break;
     case 'delete':
-      handleDelete(row)
+      handleDelete(row )
       break;
     default:
       console.warn(`未知的操作类型: ${code}`);

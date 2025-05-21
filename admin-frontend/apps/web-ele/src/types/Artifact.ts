@@ -1,5 +1,5 @@
 export interface Artifact {
-    id: number;
+    id: string;
     originId: string;
     title: string;
     url: string;

@@ -76,7 +76,14 @@ export const useGridSchema = () => {
   return schema;
 }
 export const useFormSchema = () => {
-  const schema: VbenFormProps['schema'] = [{
+  const schema: VbenFormProps['schema'] =
+    [
+      {
+        component: 'Input',
+        fieldName: 'uid',
+        label: 'ID',
+      },
+      {
       component: 'Input',
       fieldName: 'username',
       label: '用户名',
@@ -85,6 +92,11 @@ export const useFormSchema = () => {
       component: 'Input',
       fieldName: 'nickname',
       label: '昵称',
+    },
+      {
+      component: 'Input',
+      fieldName: 'avatarUrl',
+      label: '头像Url',
     },
     {
       component: 'Input',
@@ -148,7 +160,7 @@ export const useColumns = () =>{
           cellValue === '1' ? '女' : '未知',
     },
     { field: 'ip', title: 'IP',width: 150 },
-    { field: 'avatarUrl', title: '头像Url', width: 150 },
+    { field: 'avatarUrl', title: '头像', width: 150, slots:{default:'image-url'}},
     { field: 'status', title: '状态', width: 100 },
     { field: 'lastLogin', title: '最后登录', width: 150 },
     { field: 'createdAt', title: '创建时间', width: 150 },

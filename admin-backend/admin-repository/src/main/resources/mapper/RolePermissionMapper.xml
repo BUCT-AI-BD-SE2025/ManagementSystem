@@ -13,4 +13,13 @@
         WHERE rp.role_id = #{roleId}
     </select>
 
+    <resultMap id="BaseResultMap" type="fun.yozora.admin.domain.entity.RolePermission">
+        <id property="roleId" column="role_id" />
+        <id property="permId" column="perm_id" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        role_id,perm_id
+    </sql>
+
 </mapper>

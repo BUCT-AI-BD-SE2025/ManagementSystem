@@ -82,7 +82,7 @@ public class ArtifactController {
      * 根据 ID 查询文物
      */
     @GetMapping("/{id}")
-    public SaResult getArtifactById(@PathVariable Integer id) {
+    public SaResult getArtifactById(@PathVariable String id) {
         return SaResult.data(artifactService.getById(id));
     }
 
@@ -98,8 +98,8 @@ public class ArtifactController {
      * 更新文物
      */
     @PutMapping("/{id}")
-    public SaResult updateArtifact(@PathVariable Integer id, @RequestBody Artifact artifact) {
-        artifact.setId(id);
+    public SaResult updateArtifact(@PathVariable String id, @RequestBody Artifact artifact) {
+        artifact.setId(Integer.valueOf(id));
         return SaResult.data(artifactService.updateById(artifact));
     }
 
@@ -107,7 +107,7 @@ public class ArtifactController {
      * 删除文物
      */
     @DeleteMapping("/{id}")
-    public SaResult deleteArtifact(@PathVariable Integer id) {
+    public SaResult deleteArtifact(@PathVariable String id) {
         return SaResult.data(artifactService.removeById(id));
     }
 
@@ -115,7 +115,7 @@ public class ArtifactController {
      * 批量删除文物
      */
     @DeleteMapping("/batch")
-    public SaResult deleteArtifacts(@RequestBody List<Integer> ids) {
+    public SaResult deleteArtifacts(@RequestBody List<String> ids) {
         return SaResult.data(artifactService.removeByIds(ids));
     }
 }
