@@ -1,5 +1,4 @@
 import { ref } from 'vue'
-import type { VbenVxeGridApi } from '#/adapter/vxe-table'
 import { ElMessageBox, ElMessage } from 'element-plus'
 export function useBaseCRUD<T>({
   api,
@@ -10,9 +9,10 @@ export function useBaseCRUD<T>({
     deleteItem: (id: string | number) => Promise<any>
     batchDeleteItems: (ids: (string | number)[]) => Promise<any>
   }
-  gridApi: VbenVxeGridApi<T>
+  gridApi: any
   formDrawerApi?: any
 }) {
+
   function onRefresh() {
     gridApi.query()
   }
@@ -38,7 +38,7 @@ export function useBaseCRUD<T>({
   }
 
   async function handleBatchDelete() {
-    const selectedRows = await gridApi.grid.getCheckboxRecords()
+    const selectedRows = await gridApi.grid.getCheckboxRecords() as Array<T & { id: string | number }
 
     if (!selectedRows.length) {
       ElMessage.warning('请至少选择一条记录')
@@ -51,7 +51,6 @@ export function useBaseCRUD<T>({
         cancelButtonText: '取消',
         type: 'warning',
       })
-
       const ids = selectedRows.map(row => row.id)
       const res = await api.batchDeleteItems(ids)
 
