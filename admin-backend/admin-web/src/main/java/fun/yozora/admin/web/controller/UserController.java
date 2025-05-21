@@ -5,6 +5,7 @@ import cn.dev33.satoken.util.SaResult;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.uuid.Generators;
+import fun.yozora.admin.core.annotation.LogOperation;
 import fun.yozora.admin.web.dto.UserInfoDTO;
 import fun.yozora.admin.domain.entity.User;
 import fun.yozora.admin.core.service.UserService;
@@ -22,6 +23,7 @@ public class UserController
     @Autowired
     private UserService userService;
 
+    @LogOperation(targetType = "user", actionType = "create")
     @PostMapping()
     public SaResult createUser(@RequestBody User user)
     {
@@ -85,6 +87,7 @@ public class UserController
         return SaResult.data(userPage);
     }
 
+    @LogOperation(targetType = "user", actionType = "update")
     @PutMapping(value = "/{uid}")
     public SaResult updateUser(@PathVariable String uid, @RequestBody User user)
     {
@@ -92,11 +95,13 @@ public class UserController
         return SaResult.data(userService.updateById(user));
     }
 
+    @LogOperation(targetType = "user", actionType = "delete")
     @DeleteMapping(value = "/{id}")
     public SaResult deleteUser(@PathVariable String id)
     {
         return SaResult.data(userService.removeById(id));
     }
+    @LogOperation(targetType = "user", actionType = "delete")
     @DeleteMapping(value = "/batch")
     public SaResult deleteUsers(@RequestBody List<String> ids)
     {

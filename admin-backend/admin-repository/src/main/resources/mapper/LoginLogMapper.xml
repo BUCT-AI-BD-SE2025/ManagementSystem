@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fun.yozora.admin.repository.mapper.LoginLogMapper">
+
+    <resultMap id="BaseResultMap" type="fun.yozora.admin.domain.entity.LoginLog">
+            <id property="logId" column="log_id" />
+            <result property="userId" column="user_id" />
+            <result property="username" column="username" />
+            <result property="ipAddress" column="ip_address" />
+            <result property="deviceInfo" column="device_info" />
+            <result property="isSuccess" column="is_success" />
+            <result property="loginTime" column="login_time" />
+            <result property="message" column="message" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        log_id,user_id,username,ip_address,device_info,is_success,
+        login_time,message
+    </sql>
+</mapper>
