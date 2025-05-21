@@ -10,6 +10,7 @@ import {ArtifactApi} from "#/api/management/artifact";
 
 import type {Artifact} from "#/types/Artifact";
 import {useFormSchema} from "./data";
+import {ElMessage} from "element-plus";
 
 const emits = defineEmits(['success']);
 
@@ -30,12 +31,17 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
     drawerApi.lock();
 
-    if (id.value) {
-      // 更新用户
-      await ArtifactApi.updateArtifact(id.value, values);
-    } else {
-      // 创建用户
-      await ArtifactApi.createArtifact(values);
+
+    try {
+      if (id.value) {
+        await ArtifactApi.updateArtifact(id.value, values);
+      } else {
+        await ArtifactApi.createArtifact(values);
+      }
+    } catch (e){
+      ElMessage.error("提交失败，请重试'");
+    } finally {
+      drawerApi.unlock();
     }
 
     emits('success');
