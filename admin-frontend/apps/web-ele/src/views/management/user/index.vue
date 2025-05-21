@@ -14,7 +14,7 @@ import {ElButton, ElImage} from 'element-plus';
 import {UserApi} from "#/api/management/user";
 import {useBaseCRUD} from "#/hooks/base/useBaseCRUD";
 
-import From from "./from.vue";
+import Form from "./form.vue";
 import type {User} from "#/types/User";
 import {$t} from "@vben/locales";
 import {useColumns, useGridSchema} from "./data";
@@ -72,7 +72,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
 });
 
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
-  connectedComponent: From,
+  connectedComponent: Form,
   destroyOnClose: true,
   onClosed: async () => {await gridApi.query()},
 })

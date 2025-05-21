@@ -7,12 +7,13 @@ import { useVbenForm } from '#/adapter/form';
 import { useVbenDrawer } from '@vben/common-ui';
 import { $t } from '#/locales';
 import {PermissionApi} from "#/api/management/permission";
-import type {Artifact} from "#/types/Artifact";
+import type {Permission as DataType} from "#/types/Permission";
 import {useFormSchema} from "./data";
 
+import {ElMessage} from "element-plus";
 const emits = defineEmits(['success']);
 
-const formData = ref<Artifact>();
+const formData = ref<DataType>();
 const id = ref<string>();
 
 const [Form, formApi] = useVbenForm({
@@ -28,13 +29,16 @@ const [Drawer, drawerApi] = useVbenDrawer({
     const values = await formApi.getValues();
 
     drawerApi.lock();
-
-    if (id.value) {
-      // 更新用户
-      await PermissionApi.updatePermission(id.value, values);
-    } else {
-      // 创建用户
-      await PermissionApi.createPermission(values);
+    try {
+      if (id.value) {
+        await PermissionApi.updatePermission(id.value, values);
+      } else {
+        await PermissionApi.createPermission(values);
+      }
+    } catch (e){
+      ElMessage.error("提交失败，请重试");
+    } finally {
+      drawerApi.unlock();
     }
 
     emits('success');
@@ -42,11 +46,11 @@ const [Drawer, drawerApi] = useVbenDrawer({
   },
   onOpenChange(isOpen) {
     if (isOpen) {
-      const data = drawerApi.getData<Artifact>();
+      const data = drawerApi.getData<DataType>();
       formApi.resetForm();
       if (data) {
         formData.value = data;
-        id.value = data.id;
+        id.value = data.permId;
         formApi.setValues(data);
       } else {
         id.value = undefined;

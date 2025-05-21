@@ -1,7 +1,10 @@
 package fun.yozora.admin.core.service;
 
+import cn.dev33.satoken.util.SaResult;
 import fun.yozora.admin.domain.entity.RolePermission;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
 * @author Yozor
@@ -10,4 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface RolePermissionService extends IService<RolePermission> {
 
+
+    public void assignPermissionsToRole(String roleId, List<String> permIds);
 }

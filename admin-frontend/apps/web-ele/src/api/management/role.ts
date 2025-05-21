@@ -25,4 +25,8 @@ export namespace RoleApi {
   {
     return requestClient.delete('/roles/batch', {data: ids});
   }
+  export async function assignPermissions(roleId: string, permissionIds: string[])
+  {
+    return requestClient.post(`/roles/${roleId}/permissions`, permissionIds);
+  }
 }

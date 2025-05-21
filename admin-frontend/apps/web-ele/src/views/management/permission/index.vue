@@ -47,9 +47,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: Form,
   destroyOnClose: true,
-  onConfirm: () => {
-    gridApi.query();
-  },
+  onClosed: async () => {await gridApi.query()},
 })
 const { handleDelete, handleBatchDelete, handleCreate, handleEdit } = useBaseCRUD({
   api: {

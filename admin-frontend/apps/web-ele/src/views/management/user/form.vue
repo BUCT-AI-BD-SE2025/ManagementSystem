@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { User } from '#/types/User';
-
 import {computed, ref} from 'vue';
 
 import { useVbenForm } from '#/adapter/form';
@@ -9,6 +8,7 @@ import { useVbenDrawer } from '@vben/common-ui';
 import { $t } from '#/locales';
 import {UserApi} from "#/api/management/user";
 import {useFormSchema} from "./data";
+import {ElMessage} from "element-plus";
 
 const emits = defineEmits(['success']);
 
@@ -28,13 +28,16 @@ const [Drawer, drawerApi] = useVbenDrawer({
     const values = await formApi.getValues();
 
     drawerApi.lock();
-
-    if (id.value) {
-      // 更新用户
-      await UserApi.updateUser(id.value, values);
-    } else {
-      // 创建用户
-      await UserApi.createUser(values);
+    try {
+      if (id.value) {
+        await UserApi.updateUser(id.value, values);
+      } else {
+        await UserApi.createUser(values);
+      }
+    } catch (e){
+      ElMessage.error("提交失败，请重试");
+    } finally {
+      drawerApi.unlock();
     }
 
     emits('success');

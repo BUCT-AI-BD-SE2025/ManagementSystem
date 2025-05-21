@@ -25,15 +25,18 @@ public class RoleController
             @RequestParam(required = false) String roleId,
             @RequestParam(required = false) String roleCode,
             @RequestParam(required = false) String roleName,
-            @RequestParam(required = false) String description
+            @RequestParam(required = false) String description,
+            @RequestParam(defaultValue = "false") boolean isAll
     ){
+        if (isAll)
+            return SaResult.data(roleService.list());
         QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
         if (roleId != null && !roleId.isEmpty())
-            queryWrapper.eq("roleId", roleId);
+            queryWrapper.eq("role_id", roleId);
         if (roleCode != null && !roleCode.isEmpty())
             queryWrapper.eq("roleCode", roleCode);
         if (roleName != null && !roleName.isEmpty())
-            queryWrapper.like("roleName", roleName);
+            queryWrapper.like("role_name", roleName);
         if (description != null && !description.isEmpty())
             queryWrapper.like("description", description);
         Page<Role> rolePage = roleService.page(new Page<>(page, pageSize), queryWrapper);
@@ -60,7 +63,7 @@ public class RoleController
         boolean exists = roleService.exists(wrapper);
 
         if (exists) {
-            return SaResult.error("权限编码已存在，请更换");
+            return SaResult.error("角色编码已存在，请更换");
         }
         boolean save = roleService.save(role);
         return save ? SaResult.ok("创建成功") : SaResult.error("创建失败");

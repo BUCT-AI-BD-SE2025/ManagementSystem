@@ -22,18 +22,21 @@ public class PermissionController
     public SaResult getPermissions(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "20") Integer pageSize,
-            @RequestParam(required = false) String perm_id,
-            @RequestParam(required = false) String perm_code,
-            @RequestParam(required = false) String perm_name,
-            @RequestParam(required = false) String description
+            @RequestParam(required = false) String permId,
+            @RequestParam(required = false) String permCode,
+            @RequestParam(required = false) String permName,
+            @RequestParam(required = false) String description,
+            @RequestParam(defaultValue = "false") boolean isAll
     ){
+        if (isAll)
+            return SaResult.data(permissionService.list());
         QueryWrapper<Permission> queryWrapper = new QueryWrapper<>();
-        if (perm_id != null && !perm_id.isEmpty())
-            queryWrapper.eq("perm_id", perm_id);
-        if (perm_code != null && !perm_code.isEmpty())
-            queryWrapper.eq("perm_code", perm_code);
-        if (perm_name != null && !perm_name.isEmpty())
-            queryWrapper.like("perm_name", perm_name);
+        if (permId != null && !permId.isEmpty())
+            queryWrapper.eq("perm_id", permId);
+        if (permCode != null && !permCode.isEmpty())
+            queryWrapper.eq("perm_code", permCode);
+        if (permName != null && !permName.isEmpty())
+            queryWrapper.like("perm_name", permName);
         if (description != null && !description.isEmpty())
             queryWrapper.like("description", description);
         Page<Permission> permissionPage = permissionService.page(new Page<>(page, pageSize), queryWrapper);
