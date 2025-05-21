@@ -25,7 +25,6 @@ interface RowType extends User{}
 
 function onEdit(row: RowType) {
   formDrawerApi.setData(row).open()
-  onRefresh();
 }
 
 async function onDelete(row: RowType) {

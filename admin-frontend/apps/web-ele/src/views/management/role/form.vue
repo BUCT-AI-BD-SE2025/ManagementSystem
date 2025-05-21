@@ -7,7 +7,9 @@ import { useVbenForm } from '#/adapter/form';
 import { useVbenDrawer } from '@vben/common-ui';
 import { $t } from '#/locales';
 import {ArtifactApi} from "#/api/management/artifact";
+
 import type {Artifact} from "#/types/Artifact";
+import {useFormSchema} from "./data";
 
 const emits = defineEmits(['success']);
 
@@ -15,75 +17,7 @@ const formData = ref<Artifact>();
 const id = ref<string>();
 
 const [Form, formApi] = useVbenForm({
-  schema: [
-    {
-      component: 'Input',
-      fieldName: 'originId',
-      label: '原始ID',
-    },
-    {
-      component: 'Input',
-      fieldName: 'title',
-      label: '名称',
-    },
-    {
-      component: 'Input',
-      fieldName: 'url',
-      label: '链接',
-    },
-    {
-      component: 'Input',
-      fieldName: 'image',
-      label: '图片',
-    },
-    {
-      component: 'Input',
-      fieldName: 'location',
-      label: '位置',
-    },
-    {
-      component: 'Input',
-      fieldName: 'period',
-      label: '年代',
-    },
-    {
-      component: 'Input',
-      fieldName: 'material',
-      label: '材质',
-    },
-    {
-      component: 'Input',
-      fieldName: 'measurement',
-      label: '尺寸',
-    },
-    {
-      component: 'Input',
-      fieldName: 'artist',
-      label: '作者',
-    },
-    {
-      component: 'Input',
-      fieldName: 'creditLine',
-      label: '来源',
-    },
-    {
-      component: 'Input',
-      fieldName: 'type',
-      label: '类型',
-    },
-    {
-      component: 'Input',
-      fieldName: 'description',
-      label: '描述',
-    },
-    {
-      component: 'Input',
-      fieldName: 'illusion',
-      label: '注释',
-    },
-
-
-  ],
+  schema: useFormSchema(),
   showDefaultActions: false,
 });
 
@@ -99,13 +33,14 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (id.value) {
       // 更新用户
       await ArtifactApi.updateArtifact(id.value, values);
+      emits('success');
+      await drawerApi.close();
     } else {
       // 创建用户
       await ArtifactApi.createArtifact(values);
     }
-
     emits('success');
-    drawerApi.close();
+    await drawerApi.close();
   },
   onOpenChange(isOpen) {
     if (isOpen) {
