@@ -1,16 +1,18 @@
 import { ref } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
-export function useBaseCRUD<T>({
+export function useBaseCRUD<T, ID = string | number>({
   api,
   gridApi,
   formDrawerApi,
+  idField = 'id',
 }: {
   api: {
-    deleteItem: (id: string | number) => Promise<any>
-    batchDeleteItems: (ids: (string | number)[]) => Promise<any>
+    deleteItem: (id: ID) => Promise<any>;
+    batchDeleteItems: (ids: ID[]) => Promise<any>;
   }
   gridApi: any
   formDrawerApi?: any
+  idField?: keyof T;
 }) {
 
   function onRefresh() {
@@ -20,7 +22,7 @@ export function useBaseCRUD<T>({
 
   const loading = ref(false)
 
-  async function handleDelete(row: T & { id: string | number }) {
+  async function handleDelete(row: T & { id: ID}) {
       await ElMessageBox.confirm('确定要删除该项吗？', '提示', {
         confirmButtonText: '确认',
         cancelButtonText: '取消',
@@ -38,7 +40,7 @@ export function useBaseCRUD<T>({
   }
 
   async function handleBatchDelete() {
-    const selectedRows = await gridApi.grid.getCheckboxRecords() as Array<T & { id: string | number }
+    const selectedRows = await gridApi.grid.getCheckboxRecords()
 
     if (!selectedRows.length) {
       ElMessage.warning('请至少选择一条记录')
@@ -51,7 +53,7 @@ export function useBaseCRUD<T>({
         cancelButtonText: '取消',
         type: 'warning',
       })
-      const ids = selectedRows.map(row => row.id)
+      const ids = selectedRows.map(row => row[idField as keyof T] as ID)
       const res = await api.batchDeleteItems(ids)
 
       if (res) {

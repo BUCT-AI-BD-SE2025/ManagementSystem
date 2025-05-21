@@ -9,7 +9,7 @@ import {
 
 import {Page, useVbenDrawer} from '@vben/common-ui';
 
-import { ElButton, ElImage } from 'element-plus';
+import {ElButton, ElImage} from 'element-plus';
 
 import {UserApi} from "#/api/management/user";
 import {useBaseCRUD} from "#/hooks/base/useBaseCRUD";
@@ -25,7 +25,9 @@ const [FormDrawer, formDrawerApi] = useVbenDrawer({
   destroyOnClose: true,
 })
 
-interface RowType extends User{}
+interface RowType extends User{
+  id: string;
+}
 
 const formOptions: VbenFormProps = {
   // 默认展开
@@ -72,46 +74,19 @@ const [Grid, gridApi] = useVbenVxeGrid({
   gridOptions,
 });
 
-const { handleDelete, handleBatchDelete, handleCreate, handleEdit } = useBaseCRUD({
+const { handleDelete, handleBatchDelete, handleCreate, handleEdit } = useBaseCRUD<User, string>({
   api: {
     deleteItem: UserApi.deleteUser,
     batchDeleteItems: UserApi.batchDeleteUser,
   },
   gridApi: gridApi,
   formDrawerApi,
+  idField: 'uid'
 })
-
-async function handleBatchDelete() {
-  const selectedRows = await gridApi.grid.getCheckboxRecords() as Array<T & { id: string | number }>
-
-  if (!selectedRows.length) {
-    ElMessage.warning('请至少选择一条记录')
-    return
-  }
-
-  try {
-    await ElMessageBox.confirm(`确定要删除选中的 ${selectedRows.length} 条记录？`, '提示', {
-      confirmButtonText: '确认',
-      cancelButtonText: '取消',
-      type: 'warning',
-    })
-    const ids = selectedRows.map(row => row.id)
-    const res = await api.batchDeleteItems(ids)
-
-    if (res) {
-      ElMessage.success('批量删除成功')
-      onRefresh?.()
-    } else {
-      ElMessage.error(res.message || '批量删除失败')
-    }
-  } catch (error) {
-    ElMessage.warning('操作已取消')
-  }
-}
 
 function onActionClick(e: OnActionClickParams<RowType>) {
   const { code, row } = e;
-
+  row.id = row.uid;
   switch (code) {
     case 'edit':
       handleEdit(row)
