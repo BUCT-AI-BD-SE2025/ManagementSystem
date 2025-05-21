@@ -13,13 +13,13 @@ export namespace PermissionApi {
   {
     return requestClient.post<Permission>('/permissions', data);
   }
-  export async function updatePermission(id: string, data: Partial<Permission>)
+  export async function updatePermission(permId: string, data: Partial<Permission>)
   {
-    return requestClient.put<Permission>(`/permissions/${id}`, data);
+    return requestClient.put<Permission>(`/permissions/${permId}`, data);
   }
-  export async function deletePermission(id: string)
+  export async function deletePermission(permId: string)
   {
-    return requestClient.delete(`/permissions/${id}`);
+    return requestClient.delete(`/permissions/${permId}`);
   }
   export async function batchDeletePermission(ids: string[])
   {

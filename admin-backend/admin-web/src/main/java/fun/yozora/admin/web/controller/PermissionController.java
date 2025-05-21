@@ -39,13 +39,13 @@ public class PermissionController
         Page<Permission> permissionPage = permissionService.page(new Page<>(page, pageSize), queryWrapper);
         return SaResult.data(permissionPage);
     }
-    @GetMapping("/{id}")
-    public SaResult getPermissionById(@PathVariable Integer id)
+    @GetMapping("/{permId}")
+    public SaResult getPermissionById(@PathVariable Integer permId)
     {
-        Permission permission = permissionService.getById(id);
+        Permission permission = permissionService.getById(permId);
         return permission != null ? SaResult.data(permission) : SaResult.error("查询失败");
     }
-    @PutMapping("/{id}")
+    @PutMapping("/{permId}")
     public SaResult updatePermission(@PathVariable String permId, @RequestBody Permission permission)
     {
         permission.setPermId(permId);
@@ -55,20 +55,25 @@ public class PermissionController
     @PostMapping
     public SaResult createPermission(@RequestBody Permission permission)
     {
+        QueryWrapper<Permission> wrapper = new QueryWrapper<>();
+        wrapper.eq("perm_code", permission.getPermCode());
+        boolean exists = permissionService.exists(wrapper);
+
+        if (exists) {
+            return SaResult.error("权限编码已存在，请更换");
+        }
         boolean save = permissionService.save(permission);
         return save ? SaResult.ok("创建成功") : SaResult.error("创建失败");
     }
-    @DeleteMapping("/{id}")
-    public SaResult deletePermission(@PathVariable String id)
+    @DeleteMapping("/{permId}")
+    public SaResult deletePermission(@PathVariable String permId)
     {
-        boolean remove = permissionService.removeById(id);
-        return remove ? SaResult.ok("删除成功") : SaResult.error("删除失败");
+        return SaResult.data(permissionService.removeById(permId));
     }
     @DeleteMapping("/batch")
     public SaResult deletePermissions(@RequestBody List<String> ids)
     {
-        boolean remove = permissionService.removeByIds(ids);
-        return remove ? SaResult.ok("删除成功") : SaResult.error("删除失败");
+        return SaResult.data(permissionService.removeByIds(ids));
     }
 
 

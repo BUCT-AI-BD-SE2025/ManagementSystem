@@ -11,7 +11,7 @@ import {PermissionApi} from "#/api/management/permission";
 import getArtifactList = PermissionApi.getPermissionList;
 
 import Form from "./form.vue";
-import type {Artifact as DataType} from "#/types/Artifact";
+import type { Permission as DataType } from '#/types/Permission';
 import {$t} from "@vben/locales";
 
 import { useColumns } from "./data";
@@ -19,12 +19,11 @@ import {useGridSchema} from "./data";
 import {useBaseGridOptions} from "#/hooks/base/useBaseGridOptions";
 import {useBaseCRUD} from "#/hooks/base/useBaseCRUD";
 
-const [FormDrawer, formDrawerApi] = useVbenDrawer({
-  connectedComponent: Form,
-  destroyOnClose: true,
-})
 
-interface RowType extends DataType{}
+
+interface RowType extends DataType{
+  id: string;
+}
 
 
 
@@ -45,7 +44,13 @@ const [Grid, gridApi] = useVbenVxeGrid({
   formOptions,
   gridOptions,
 });
-
+const [FormDrawer, formDrawerApi] = useVbenDrawer({
+  connectedComponent: Form,
+  destroyOnClose: true,
+  onConfirm: () => {
+    gridApi.query();
+  },
+})
 const { handleDelete, handleBatchDelete, handleCreate, handleEdit } = useBaseCRUD({
   api: {
     deleteItem: PermissionApi.deletePermission,
@@ -53,13 +58,14 @@ const { handleDelete, handleBatchDelete, handleCreate, handleEdit } = useBaseCRU
   },
   gridApi: gridApi,
   formDrawerApi,
+  idField: 'permId',
 })
 
 
 
 function onActionClick(e: OnActionClickParams<RowType>) {
   const { code, row } = e;
-
+  row.id = row.permId;
   switch (code) {
     case 'edit':
       handleEdit(row)
