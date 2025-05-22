@@ -203,8 +203,9 @@ public class MenuController {
                         .build())
                 .children(List.of(loginLog, operationLog, apiLog, reviewLog))
                 .build();
-
-        return List.of(dashboard, management, review, log);
+        if(StpUtil.hasRoleAnd("super"))
+            return List.of(dashboard, management, review, log);
+        return List.of(dashboard,review);
     }
 
 }
