@@ -43,7 +43,7 @@
         </dependency>
         <dependency>
             <groupId>fun.yozora</groupId>
-            <artifactId>admin-utils</artifactId>
+            <artifactId>admin-contentModeration</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
