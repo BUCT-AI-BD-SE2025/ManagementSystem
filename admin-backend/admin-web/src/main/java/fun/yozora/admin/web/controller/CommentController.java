@@ -1,17 +1,19 @@
 package fun.yozora.admin.web.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.uuid.Generators;
 import fun.yozora.admin.core.annotation.LogOperation;
-import fun.yozora.admin.core.service.CommentService;
-import fun.yozora.admin.core.service.TextModerationService;
-import fun.yozora.admin.core.service.UserService;
+import fun.yozora.admin.core.service.*;
 import fun.yozora.admin.domain.dto.CommentPostDTO;
+import fun.yozora.admin.domain.dto.ReviewResultDTO;
 import fun.yozora.admin.domain.dto.UserDTO;
 import fun.yozora.admin.domain.entity.Comment;
+import fun.yozora.admin.domain.entity.CommentReviewResult;
+import fun.yozora.admin.domain.entity.TextModerationResult;
 import fun.yozora.admin.domain.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -32,6 +34,15 @@ public class CommentController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private TextModerationResultService textModerationResultService;
+
+    @Autowired
+    private CommentReviewResultService commentReviewResultService;
+
+    private String getUUID(){
+        return Generators.timeBasedGenerator().generate().toString();
+    }
 
     @GetMapping
     public SaResult getComments(
@@ -88,7 +99,7 @@ public class CommentController {
     @LogOperation(targetType = "comment", actionType = "create")
     @PostMapping
     public SaResult createComment(@RequestBody Comment comment) {
-        comment.setCommentId(Generators.timeBasedGenerator().generate().toString());
+        comment.setCommentId(getUUID());
         return SaResult.data(commentService.save(comment));
     }
 
@@ -112,10 +123,41 @@ public class CommentController {
     }
 
 
-    @PostMapping("/post/{userId}")
-    public SaResult postComment(@PathVariable String userId, @RequestBody CommentPostDTO dto) {
+    @LogOperation(targetType = "comment", actionType = "review")
+    @PutMapping("/{commentId}/status")
+    public SaResult updateCommentStatus(@PathVariable String commentId, @RequestBody ReviewResultDTO dto) {
+        dto.getIds().add(commentId); // 把单个 ID 加入 list
+        return updateCommentStatusBatch(dto);
+    }
+
+
+    @LogOperation(targetType = "comment", actionType = "review")
+    @PutMapping("/status/batch")
+    public SaResult updateCommentStatusBatch(@RequestBody ReviewResultDTO dto) {
         if (!StpUtil.isLogin())
             return SaResult.error("未登录").setCode(401);
+        if (dto.getStatus() == null || dto.getStatus().isEmpty())
+            return SaResult.error("状态不能为空");
+        if (dto.getIds()  == null || dto.getIds().isEmpty())
+            return SaResult.error("ID 不能为空");
+        List<Comment> comments = commentService.listByIds(dto.getIds());
+
+        for (Comment comment : comments) {
+            comment.setStatus(dto.getStatus());
+            CommentReviewResult commentReviewResult = new CommentReviewResult();
+            commentReviewResult.setReviewId(getUUID());
+            commentReviewResult.setCommentId(comment.getCommentId());
+            commentReviewResult.setReviewerId(StpUtil.getLoginIdAsString());
+            commentReviewResult.setReviewResult(dto.getStatus());
+            commentReviewResult.setBlockReason(dto.getReason());
+            commentReviewResultService.save(commentReviewResult);
+        }
+        return SaResult.data(commentService.updateBatchById(comments));
+    }
+
+    @SaCheckLogin
+    @PostMapping("/post/{userId}")
+    public SaResult postComment(@PathVariable String userId, @RequestBody CommentPostDTO dto) {
         Comment comment = new Comment();
         comment.setUserId(userId);
         comment.setContent(dto.getContent());
@@ -132,6 +174,20 @@ public class CommentController {
         comment.setStatus(textModerationService.commentModeration(user, comment));
         return SaResult.data(commentService.save(comment));
     }
+
+    @GetMapping("result/api")
+    public SaResult getCommentResultApi(@RequestParam String commentId) {
+        if (commentService.getById(commentId) == null)
+            return SaResult.error("评论不存在");
+        return SaResult.data(textModerationResultService.list(new QueryWrapper<TextModerationResult>().eq("data_id", commentId)));
+    }
+    @GetMapping("result/review")
+    public SaResult getCommentResultReview(@RequestParam String commentId) {
+        if (commentService.getById(commentId) == null)
+            return SaResult.error("评论不存在");
+        return SaResult.data(commentReviewResultService.list(new QueryWrapper<CommentReviewResult>().eq("comment_id", commentId)));
+    }
+
 }
 
 

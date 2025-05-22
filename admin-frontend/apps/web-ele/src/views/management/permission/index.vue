@@ -44,11 +44,13 @@ const [Grid, gridApi] = useVbenVxeGrid({
   formOptions,
   gridOptions,
 });
+
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: Form,
   destroyOnClose: true,
   onClosed: async () => {await gridApi.query()},
 })
+
 const { handleDelete, handleBatchDelete, handleCreate, handleEdit } = useBaseCRUD({
   api: {
     deleteItem: PermissionApi.deletePermission,

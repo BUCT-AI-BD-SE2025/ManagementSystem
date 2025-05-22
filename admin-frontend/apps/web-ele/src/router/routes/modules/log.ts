@@ -31,6 +31,24 @@ const routes: RouteRecordRaw[] = [
           title: $t('page.log.operationLog'),
         },
       },
+      {
+        name: 'ApiLog',
+        path: '/apiLog',
+        component: () => import('#/views/log/apiLog/index.vue'),
+        meta: {
+          icon: 'lucide:layout-dashboard',
+          title: $t('page.log.apiLog'),
+        },
+      },
+      {
+        name: 'ReviewLog',
+        path: '/reviewLog',
+        component: () => import('#/views/log/reviewLog/index.vue'),
+        meta: {
+          icon: 'lucide:layout-dashboard',
+          title: $t('page.log.reviewLog'),
+        },
+      }
     ],
   },
 ];

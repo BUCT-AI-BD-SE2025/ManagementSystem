@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fun.yozora.admin.repository.mapper.CommentReviewResultMapper">
+
+    <resultMap id="BaseResultMap" type="fun.yozora.admin.domain.entity.CommentReviewResult">
+            <id property="reviewId" column="review_id" />
+            <result property="commentId" column="comment_id" />
+            <result property="reviewerId" column="reviewer_id" />
+            <result property="status" column="status" />
+            <result property="reviewResult" column="review_result" />
+            <result property="blockReason" column="block_reason" />
+            <result property="reviewTime" column="review_time" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        review_id,comment_id,reviewer_id,status,review_result,block_reason,
+        review_time
+    </sql>
+</mapper>

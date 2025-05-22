@@ -1,6 +1,7 @@
 
 package fun.yozora.admin.web.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import fun.yozora.admin.web.dto.MenuDTO;
 import fun.yozora.admin.web.dto.MenuMetaDTO;
@@ -16,6 +17,8 @@ public class MenuController {
 
     @GetMapping("/all")
     public SaResult getAllMenus() {
+        if (!StpUtil.isLogin())
+            return SaResult.error("未登录").setCode(401);
         List<MenuDTO> menus = buildDashboardMenus();
         return SaResult.ok("获取成功").setData(menus);
     }
@@ -108,6 +111,16 @@ public class MenuController {
                         .title("page.management.comment")
                         .build())
                 .build();
+        MenuDTO database = MenuDTO.builder()
+                .name("Database")
+                .path("/database")
+                .component("/management/database/index")
+                .meta(MenuMetaDTO.defaultMeta()
+                        .toBuilder()
+                        .title("page.management.database")
+                        .build())
+                .build();
+
         MenuDTO management = MenuDTO.builder()
                 .name("Management")
                 .path("/")
@@ -117,7 +130,7 @@ public class MenuController {
                         .title("page.management.title")
                         .order(-1)
                         .build())
-                .children(List.of(user, role, permission, artifact, comment))
+                .children(List.of(user, role, permission, artifact, comment, database))
                 .build();
 
         MenuDTO commentReivew = MenuDTO.builder()
@@ -161,6 +174,24 @@ public class MenuController {
                         .title("page.log.operationLog")
                         .build())
                 .build();
+        MenuDTO apiLog = MenuDTO.builder()
+                .name("ApiLog")
+                .path("/apiLog")
+                .component("/log/apiLog/index")
+                .meta(MenuMetaDTO.defaultMeta()
+                        .toBuilder()
+                        .title("page.log.apiLog")
+                        .build())
+                .build();
+        MenuDTO reviewLog = MenuDTO.builder()
+                .name("ReviewLog")
+                .path("/reviewLog")
+                .component("/log/reviewLog/index")
+                .meta(MenuMetaDTO.defaultMeta()
+                        .toBuilder()
+                        .title("page.log.reviewLog")
+                        .build())
+                .build();
         MenuDTO log = MenuDTO.builder()
                 .name("Log")
                 .path("/")
@@ -170,7 +201,7 @@ public class MenuController {
                         .title("page.log.title")
                         .order(-1)
                         .build())
-                .children(List.of(loginLog, operationLog))
+                .children(List.of(loginLog, operationLog, apiLog, reviewLog))
                 .build();
 
         return List.of(dashboard, management, review, log);

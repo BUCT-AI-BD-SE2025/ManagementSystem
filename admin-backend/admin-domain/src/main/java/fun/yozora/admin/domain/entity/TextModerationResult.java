@@ -44,7 +44,7 @@ public class TextModerationResult implements Serializable {
     /**
      * 置信度评分（0-100）
      */
-    private Integer score;
+    private long score;
 
     /**
      * 详细检测结果（JSON对象）

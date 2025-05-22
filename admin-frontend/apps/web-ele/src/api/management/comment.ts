@@ -31,4 +31,23 @@ export namespace CommentApi {
   export async function batchDeleteComment(ids: string[]) {
     return requestClient.delete('/comment/batch', {data: ids});
   }
+
+  export async function updateStatus(commentId: string, reason: string, status: string) {
+    return requestClient.put(`/comment/${commentId}/status`,  {
+      status:  status,
+      reason:  reason
+    });
+  }
+  export const batchUpdateStatus = (params: {
+    ids: string[];
+    status: string;
+    reason?: string; // 可选
+  }) => {
+    return requestClient.put('/comment/status/batch', params);
+  };
+
+  export const getApiResponse = (commentId: string) => {
+    return requestClient.get(`/comment/result/api?commentId=${commentId}`);
+  };
+
 }

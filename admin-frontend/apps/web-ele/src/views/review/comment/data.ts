@@ -22,24 +22,13 @@ export const useGridSchema = () => {
     {
       component: 'Select',
       fieldName: 'status',
+      defaultValue: 'Review',
       label: '状态',
       componentProps: {
         options: [
           {
-            label: '全部',
-            value: '',
-          },
-          {
-            label: 'Pass',
-            value: 'Pass',
-          },
-          {
-            label: 'Review',
+            label: '待审核',
             value: 'Review',
-          },
-          {
-            label: 'Block',
-            value: 'Block',
           },
         ],
       },
@@ -73,16 +62,6 @@ export const useFormSchema = () => {
   const schema: VbenFormProps['schema'] =
     [
       {
-        component: 'Input',
-        fieldName: 'userId',
-        label: '用户ID',
-      },
-      {
-        component: 'Input',
-        fieldName: 'content',
-        label: '内容',
-      },
-      {
         component: 'Select',
         fieldName: 'status',
         label: '状态',
@@ -111,7 +90,7 @@ export const useFormSchema = () => {
 export const useColumns = () =>{
   const columns: VxeTableGridOptions<Comment>['columns'] = [
     { align: 'left', title: '',  type: 'checkbox',  width: 50},
-    { field: 'commentId', title: 'ID' },
+    { field: 'commentId', title: '评论ID' },
     { field: 'userId', title: '用户ID' },
     { field: 'content', title: '内容' },
     { field: 'status', title: '状态' },
@@ -121,7 +100,7 @@ export const useColumns = () =>{
       field: 'action',
       fixed: 'right',
       title: '操作',
-      width: 120,
+      width: 200,
       slots: { default: 'action' },
     },
   ]

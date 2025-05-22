@@ -57,6 +57,15 @@ const routes: RouteRecordRaw[] = [
           icon: 'lucide:layout-dashboard',
           title: $t('page.management.comment'),
         }
+      },
+      {
+        name: 'Database',
+        path: '/database',
+        component: () => import('#/views/management/database/index.vue'),
+        meta: {
+          icon: 'lucide:layout-dashboard',
+          title: $t('page.management.database'),
+        }
       }
     ],
   },
