@@ -1,5 +1,8 @@
 package fun.yozora.admin.domain.dto;
 
+import lombok.Data;
+
+@Data
 public class ArtifactDTO {
 
     private String id;

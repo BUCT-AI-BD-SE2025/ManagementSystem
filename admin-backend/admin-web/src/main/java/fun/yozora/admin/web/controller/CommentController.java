@@ -1,12 +1,18 @@
 package fun.yozora.admin.web.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.uuid.Generators;
 import fun.yozora.admin.core.annotation.LogOperation;
 import fun.yozora.admin.core.service.CommentService;
+import fun.yozora.admin.core.service.TextModerationService;
+import fun.yozora.admin.core.service.UserService;
+import fun.yozora.admin.domain.dto.CommentPostDTO;
+import fun.yozora.admin.domain.dto.UserDTO;
 import fun.yozora.admin.domain.entity.Comment;
+import fun.yozora.admin.domain.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +26,12 @@ public class CommentController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private TextModerationService textModerationService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping
     public SaResult getComments(
@@ -97,6 +109,28 @@ public class CommentController {
     @DeleteMapping("/batch")
     public SaResult deleteComments(@RequestBody List<String> ids) {
         return SaResult.data(commentService.removeByIds(ids));
+    }
+
+
+    @PostMapping("/post/{userId}")
+    public SaResult postComment(@PathVariable String userId, @RequestBody CommentPostDTO dto) {
+        if (!StpUtil.isLogin())
+            return SaResult.error("未登录").setCode(401);
+        Comment comment = new Comment();
+        comment.setUserId(userId);
+        comment.setContent(dto.getContent());
+        comment.setCommentId(Generators.timeBasedGenerator().generate().toString());
+        comment.setCreatedTime(LocalDateTime.now());
+        comment.setUpdatedTime(LocalDateTime.now());
+
+        UserDTO user = new UserDTO();
+        User dbUser = userService.getUserByUid(userId);
+        user.setUid(userId);
+        user.setUsername(dbUser.getUsername());
+        user.setNickname(dbUser.getNickname());
+
+        comment.setStatus(textModerationService.commentModeration(user, comment));
+        return SaResult.data(commentService.save(comment));
     }
 }
 

@@ -18,7 +18,6 @@
         <module>admin-core</module>
         <module>admin-web</module>
         <module>admin-app</module>
-        <module>admin-content-moderation</module>
         <module>admin-domain</module>
         <module>admin-repository</module>
     </modules>
