@@ -49,6 +49,15 @@ const routes: RouteRecordRaw[] = [
           title: $t('page.management.artifact'),
         },
       },
+      {
+        name: 'Comment',
+        path: '/comment',
+        component: () => import('#/views/management/comment/index.vue'),
+        meta: {
+          icon: 'lucide:layout-dashboard',
+          title: $t('page.management.comment'),
+        }
+      }
     ],
   },
 ];

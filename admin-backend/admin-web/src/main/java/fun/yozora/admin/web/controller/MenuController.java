@@ -99,6 +99,15 @@ public class MenuController {
                         .build())
                 .build();
 
+        MenuDTO comment = MenuDTO.builder()
+                .name("Comment")
+                .path("/comment")
+                .component("/management/comment/index")
+                .meta(MenuMetaDTO.defaultMeta()
+                        .toBuilder()
+                        .title("page.management.comment")
+                        .build())
+                .build();
         MenuDTO management = MenuDTO.builder()
                 .name("Management")
                 .path("/")
@@ -108,10 +117,33 @@ public class MenuController {
                         .title("page.management.title")
                         .order(-1)
                         .build())
-                .children(List.of(user, role, permission, artifact))
+                .children(List.of(user, role, permission, artifact, comment))
                 .build();
 
-        MenuDTO loginLog  = MenuDTO.builder()
+        MenuDTO commentReivew = MenuDTO.builder()
+                .name("CommentReview")
+                .path("/commentReview")
+                .component("/review/comment/index")
+                .meta(MenuMetaDTO.defaultMeta()
+                        .toBuilder()
+                        .title("page.review.comment")
+                        .build())
+                .build();
+
+
+        MenuDTO review = MenuDTO.builder()
+                .name("Review")
+                .path("/")
+                .redirect("/comment")
+                .meta(MenuMetaDTO.defaultMeta()
+                        .toBuilder()
+                        .title("page.review.title")
+                        .order(-1)
+                        .build())
+                .children(List.of(commentReivew))
+                .build();
+
+        MenuDTO loginLog = MenuDTO.builder()
                 .name("LoginLog")
                 .path("/loginLog")
                 .component("/log/loginLog/index")
@@ -141,7 +173,7 @@ public class MenuController {
                 .children(List.of(loginLog, operationLog))
                 .build();
 
-        return List.of(dashboard, management, log);
+        return List.of(dashboard, management, review, log);
     }
 
 }

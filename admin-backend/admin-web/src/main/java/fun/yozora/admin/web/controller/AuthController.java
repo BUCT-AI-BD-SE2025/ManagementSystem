@@ -97,7 +97,6 @@ public class AuthController
             loginLog.setIsSuccess(1); // 成功
             loginLog.setMessage("登录成功");
 
-            System.out.println(loginLog);
             loginLogService.save(loginLog);
             String token = StpUtil.getTokenValue();
             return SaResult.ok("登录成功").setData(Map.of("accessToken",token));

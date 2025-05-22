@@ -3,6 +3,7 @@ package fun.yozora.admin.web.controller;
 import cn.dev33.satoken.util.SaResult;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import fun.yozora.admin.core.annotation.LogOperation;
 import fun.yozora.admin.core.service.RoleService;
 import fun.yozora.admin.domain.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,7 @@ public class RoleController
         Role role = roleService.getById(roleId);
         return role != null ? SaResult.data(role) : SaResult.error("查询失败");
     }
+    @LogOperation(targetType = "role", actionType = "update")
     @PutMapping("/{roleId}")
     public SaResult updateRole(@PathVariable String roleId, @RequestBody Role role)
     {
@@ -55,6 +57,7 @@ public class RoleController
         boolean update = roleService.updateById(role);
         return update ? SaResult.ok("更新成功") : SaResult.error("更新失败");
     }
+    @LogOperation(targetType = "role", actionType = "create")
     @PostMapping
     public SaResult createRole(@RequestBody Role role)
     {
@@ -68,11 +71,13 @@ public class RoleController
         boolean save = roleService.save(role);
         return save ? SaResult.ok("创建成功") : SaResult.error("创建失败");
     }
+    @LogOperation(targetType = "role", actionType = "delete")
     @DeleteMapping("/{roleId}")
     public SaResult deleteRole(@PathVariable String roleId)
     {
         return SaResult.data(roleService.removeById(roleId));
     }
+    @LogOperation(targetType = "role", actionType = "delete")
     @DeleteMapping("/batch")
     public SaResult deleteRoles(@RequestBody List<String> ids)
     {

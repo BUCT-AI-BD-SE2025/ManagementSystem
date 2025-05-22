@@ -3,6 +3,7 @@ package fun.yozora.admin.web.controller;
 import cn.dev33.satoken.util.SaResult;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import fun.yozora.admin.core.annotation.LogOperation;
 import fun.yozora.admin.core.service.ArtifactService;
 import fun.yozora.admin.domain.entity.Artifact;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,7 @@ public class ArtifactController {
     /**
      * 根据 ID 查询文物
      */
+    @LogOperation(targetType = "artifact", actionType = "create")
     @GetMapping("/{id}")
     public SaResult getArtifactById(@PathVariable String id) {
         return SaResult.data(artifactService.getById(id));
@@ -89,6 +91,7 @@ public class ArtifactController {
     /**
      * 新增文物
      */
+    @LogOperation(targetType = "artifact", actionType = "create")
     @PostMapping
     public SaResult createArtifact(@RequestBody Artifact artifact) {
         return SaResult.data(artifactService.save(artifact));
@@ -97,6 +100,7 @@ public class ArtifactController {
     /**
      * 更新文物
      */
+    @LogOperation(targetType = "artifact", actionType = "update")
     @PutMapping("/{id}")
     public SaResult updateArtifact(@PathVariable String id, @RequestBody Artifact artifact) {
         artifact.setId(Integer.valueOf(id));
@@ -106,6 +110,7 @@ public class ArtifactController {
     /**
      * 删除文物
      */
+    @LogOperation(targetType = "artifact", actionType = "delete")
     @DeleteMapping("/{id}")
     public SaResult deleteArtifact(@PathVariable String id) {
         return SaResult.data(artifactService.removeById(id));
@@ -114,6 +119,7 @@ public class ArtifactController {
     /**
      * 批量删除文物
      */
+    @LogOperation(targetType = "artifact", actionType = "delete")
     @DeleteMapping("/batch")
     public SaResult deleteArtifacts(@RequestBody List<String> ids) {
         return SaResult.data(artifactService.removeByIds(ids));

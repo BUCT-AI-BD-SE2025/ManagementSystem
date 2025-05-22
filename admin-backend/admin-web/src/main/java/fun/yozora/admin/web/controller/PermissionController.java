@@ -3,6 +3,7 @@ package fun.yozora.admin.web.controller;
 import cn.dev33.satoken.util.SaResult;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import fun.yozora.admin.core.annotation.LogOperation;
 import fun.yozora.admin.core.service.PermissionService;
 import fun.yozora.admin.domain.entity.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,7 @@ public class PermissionController
         Permission permission = permissionService.getById(permId);
         return permission != null ? SaResult.data(permission) : SaResult.error("查询失败");
     }
+    @LogOperation(targetType = "permission", actionType = "update")
     @PutMapping("/{permId}")
     public SaResult updatePermission(@PathVariable String permId, @RequestBody Permission permission)
     {
@@ -55,6 +57,7 @@ public class PermissionController
         boolean update = permissionService.updateById(permission);
         return update ? SaResult.ok("更新成功") : SaResult.error("更新失败");
     }
+    @LogOperation(targetType = "permission", actionType = "create")
     @PostMapping
     public SaResult createPermission(@RequestBody Permission permission)
     {
@@ -68,11 +71,13 @@ public class PermissionController
         boolean save = permissionService.save(permission);
         return save ? SaResult.ok("创建成功") : SaResult.error("创建失败");
     }
+    @LogOperation(targetType = "permission", actionType = "delete")
     @DeleteMapping("/{permId}")
     public SaResult deletePermission(@PathVariable String permId)
     {
         return SaResult.data(permissionService.removeById(permId));
     }
+    @LogOperation(targetType = "permission", actionType = "delete")
     @DeleteMapping("/batch")
     public SaResult deletePermissions(@RequestBody List<String> ids)
     {

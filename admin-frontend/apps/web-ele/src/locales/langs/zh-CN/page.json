@@ -16,11 +16,17 @@
     "user": "用户管理",
     "role": "角色管理",
     "permission": "权限管理",
-    "artifact": "文物管理"
+    "artifact": "文物管理",
+    "comment": "评论管理"
   },
   "log": {
     "title": "系统日志",
     "loginLog": "登录日志",
     "operationLog": "操作日志"
+  },
+  "review": {
+    "title": "内容审核",
+    "comment": "评论审核",
+    "article": "文章审核"
   }
 }
