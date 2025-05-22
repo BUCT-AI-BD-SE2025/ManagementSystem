@@ -18,7 +18,7 @@
         <module>admin-core</module>
         <module>admin-web</module>
         <module>admin-app</module>
-        <module>admin-review</module>
+        <module>admin-utils</module>
         <module>admin-domain</module>
         <module>admin-repository</module>
     </modules>
@@ -125,11 +125,6 @@
             <artifactId>jasypt-spring-boot-starter</artifactId>
             <version>3.0.5</version>
         </dependency>
-            <dependency>
-                <groupId>com.tencentcloudapi</groupId>
-                <artifactId>tencentcloud-sdk-java</artifactId>
-                <version>3.1.1267</version>
-            </dependency>
 
 
         <dependency>

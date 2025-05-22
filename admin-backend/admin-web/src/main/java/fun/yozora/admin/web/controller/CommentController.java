@@ -55,6 +55,17 @@ public class CommentController {
         Page<Comment> commentPage = commentService.page(new Page<>(page, pageSize), queryWrapper);
         return SaResult.data(commentPage);
     }
+    @GetMapping("/user/{userId}")
+    public SaResult getCommentByUserId(
+            @PathVariable String userId,
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "20") Integer pageSize){
+        QueryWrapper<Comment> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+
+        Page<Comment> commentPage = commentService.page(new Page<>(page, pageSize), queryWrapper);
+        return SaResult.data(commentPage);
+    }
 
     @LogOperation(targetType = "comment", actionType = "create")
     @GetMapping("/{commentId}")
