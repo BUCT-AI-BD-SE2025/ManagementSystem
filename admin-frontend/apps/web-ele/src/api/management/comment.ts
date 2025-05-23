@@ -49,5 +49,4 @@ export namespace CommentApi {
   export const getApiResponse = (commentId: string) => {
     return requestClient.get(`/comment/result/api?commentId=${commentId}`);
   };
-
 }

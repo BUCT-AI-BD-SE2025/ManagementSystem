@@ -5,7 +5,6 @@ import {useVbenVxeGrid, type VxeTableGridOptions} from "#/adapter/vxe-table";
 
 import { Page, } from '@vben/common-ui';
 
-import {LoginLogApi} from "#/api/log/loginLog";
 
 
 import { useColumns } from "./data";
@@ -24,7 +23,7 @@ const formOptions: VbenFormProps = {
   // 按下回车时是否提交表单
   submitOnEnter: false,
 };
-const gridOptions: VxeTableGridOptions = useBaseGridOptions(useColumns(), LoginLogApi.getLoginLogList,
+const gridOptions: VxeTableGridOptions = useBaseGridOptions(useColumns(), ReviewLogApi.getReviewLogList,
   {
     proxyConfig: {
       ajax: {
@@ -38,7 +37,7 @@ const gridOptions: VxeTableGridOptions = useBaseGridOptions(useColumns(), LoginL
           }
           delete params.loginTime;
 
-          const res = await LoginLogApi.getLoginLogList(params);
+          const res = await ReviewLogApi.getReviewLogList(params);
           return {
             items: res.records,
             total: res.total,
@@ -51,10 +50,7 @@ const gridOptions: VxeTableGridOptions = useBaseGridOptions(useColumns(), LoginL
 const [Grid] = useVbenVxeGrid({
   formOptions,
   gridOptions,
-});
-
-
-
+})
 
 </script>
 

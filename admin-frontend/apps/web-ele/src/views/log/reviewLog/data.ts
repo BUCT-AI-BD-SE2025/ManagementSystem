@@ -1,49 +1,33 @@
 import type {VbenFormProps} from "#/adapter/form";
 import type { VxeTableGridOptions } from "#/adapter/vxe-table";
-import type {LoginLog as DataType} from "#/types/LoginLog";
+import type {ReviewLog as DataType} from "#/types/ReviewLog";
 
 export const useGridSchema = () => {
   const schema: VbenFormProps['schema'] = [
     {
       component: 'Input',
-      fieldName: 'logId',
+      fieldName: 'reviewedId',
       label: 'ID',
     },
     {
       component: 'Input',
-      fieldName: 'userId',
-      label: '用户ID',
+      fieldName: 'commentId',
+      label: '评论ID',
     },
     {
       component: 'Input',
-      fieldName: 'username',
-      label: '用户名',
+      fieldName: 'reviewerId',
+      label: '审核人ID',
+    },
+    {
+      component: 'Status',
+      fieldName: 'reviewResult',
+      label: '审核结果',
     },
     {
       component: 'Input',
-      fieldName: 'ipAddress',
-      label: 'IP地址',
-    },
-    {
-      component: 'Input',
-      fieldName: 'deviceInfo',
-      label: '设备信息',
-    },
-    {
-      component: 'Input',
-      fieldName: 'isSuccess',
-      label: '是否成功',
-    },
-    {
-      component: 'DatePicker',
-      fieldName: 'loginTime',
-      label: '登陆时间',
-      componentProps: {
-        type: 'daterange',
-        rangeSeparator: '至',
-        startPlaceholder: '开始日期',
-        endPlaceholder: '结束日期',
-      },
+      fieldName: 'blockReason',
+      label: '驳回理由',
     }]
 
   return schema;
@@ -52,13 +36,13 @@ export const useGridSchema = () => {
 export const useColumns = () =>{
   const columns: VxeTableGridOptions<DataType>['columns'] = [
     { fixed: 'left', align: 'left',title: '',  type: 'checkbox',  width: 50},
-    { fixed: 'left',field: 'logId', title: 'ID' },
-    { field: 'userId', title: '用户ID'},
-    { field: 'username', title: '用户名'},
-    { field: 'ipAddress', title: 'IP地址'},
-    { field: 'deviceInfo', title: '设备信息'},
-    { field: 'isSuccess', title: '是否成功'},
-    { field: 'loginTime', title: '登录时间'},
+    { field: 'reviewId', title: '审核ID', width: 120,},
+    { field: 'commentId', title: '评论ID', width: 120,},
+    { field: 'userId', title: '用户ID', width: 120,},
+    { field: 'status', title: '状态', width: 120,},
+    { field: 'reviewResult', title: '审核结果', width: 120,},
+    { field: 'blockReason', title: '驳回理由', width: 120,},
+    { field: 'reviewTime', title: '审核时间', width: 120,},
   ];
   return columns;
 }
