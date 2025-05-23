@@ -4,8 +4,12 @@ import cn.dev33.satoken.util.SaResult;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.yozora.admin.core.annotation.LogOperation;
+import fun.yozora.admin.core.service.RolePermissionService;
 import fun.yozora.admin.core.service.RoleService;
+import fun.yozora.admin.domain.entity.Permission;
 import fun.yozora.admin.domain.entity.Role;
+import fun.yozora.admin.domain.entity.RolePermission;
+import fun.yozora.admin.repository.mapper.RolePermissionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +22,12 @@ public class RoleController
 
     @Autowired
     private RoleService roleService;
+
+
+    @Autowired
+    private RolePermissionMapper rolePermissionMapper;
+    @Autowired
+    private RolePermissionService rolePermissionService;
 
     @GetMapping
     public SaResult getRoles(
@@ -49,6 +59,22 @@ public class RoleController
         Role role = roleService.getById(roleId);
         return role != null ? SaResult.data(role) : SaResult.error("查询失败");
     }
+    @GetMapping("/{roleId}/permissions")
+    public SaResult getRolePermissions(@PathVariable String roleId)
+    {
+        List<Role> roles = roleService.getRolesByUserId(roleId);
+        List<Permission> permissions = rolePermissionMapper.selectPermissionsByRoleId(roleId);
+        return SaResult.data(permissions);
+    }
+    @PostMapping("/{roleId}/permissions")
+    public SaResult updateRolePermissions(
+            @PathVariable String roleId,
+            @RequestBody List<String> permissionIds)
+    {
+        boolean success = rolePermissionService.assignPermissionsToRole(roleId, permissionIds);
+        return success ? SaResult.ok("权限分配成功") : SaResult.error("权限分配失败");
+    }
+
     @LogOperation(targetType = "role", actionType = "update")
     @PutMapping("/{roleId}")
     public SaResult updateRole(@PathVariable String roleId, @RequestBody Role role)
@@ -82,6 +108,12 @@ public class RoleController
     public SaResult deleteRoles(@RequestBody List<String> ids)
     {
         return SaResult.data(roleService.removeByIds(ids));
+    }
+
+    @GetMapping("/all")
+    public SaResult getAllRoles()
+    {
+        return SaResult.data(roleService.list());
     }
 };
 

@@ -1,6 +1,5 @@
 package fun.yozora.admin.core.service.impl;
 
-import cn.dev33.satoken.util.SaResult;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import fun.yozora.admin.domain.entity.RolePermission;
@@ -25,7 +24,8 @@ public class RolePermissionServiceImpl extends ServiceImpl<RolePermissionMapper,
     private RolePermissionMapper rolePermissionMapper;
 
     @Override
-    public void assignPermissionsToRole(String roleId, List<String> permIds) {
+    public boolean assignPermissionsToRole(String roleId, List<String> permIds) {
+
         QueryWrapper<RolePermission> wrapper = new QueryWrapper<>();
         wrapper.eq("role_id", roleId);
         rolePermissionMapper.delete(wrapper);
@@ -37,6 +37,7 @@ public class RolePermissionServiceImpl extends ServiceImpl<RolePermissionMapper,
             list.add(rp);
         }
         rolePermissionMapper.insert(list);
+        return true;
     }
 }
 

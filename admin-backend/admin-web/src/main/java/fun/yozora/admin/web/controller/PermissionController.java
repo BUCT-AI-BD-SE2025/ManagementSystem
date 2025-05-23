@@ -19,6 +19,11 @@ public class PermissionController
     @Autowired
     private PermissionService permissionService;
 
+    @GetMapping("/all")
+    public SaResult getAllPermissions()
+    {
+        return SaResult.data(permissionService.list());
+    }
     @GetMapping
     public SaResult getPermissions(
             @RequestParam(defaultValue = "1") Integer page,

@@ -25,4 +25,8 @@ export namespace PermissionApi {
   {
     return requestClient.delete('/permissions/batch', {data: ids});
   }
+  export async function getAllPermission()
+  {
+    return requestClient.get<Permission[]>('/permissions/all');
+  }
 }

@@ -1,9 +1,11 @@
 package fun.yozora.admin.domain.entity;
 
-import java.io.Serializable;
+import lombok.Data;
 
+import java.io.Serializable;
+@Data
 public class UserRole implements Serializable {
-    private String uid;
+    private String userId;
     private String roleId;
 
 }

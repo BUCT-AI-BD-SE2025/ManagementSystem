@@ -29,4 +29,11 @@ export namespace RoleApi {
   {
     return requestClient.post(`/roles/${roleId}/permissions`, permissionIds);
   }
+
+  export async function getRolePermissions(roleId: string) {
+    return  requestClient.get(`/roles/${roleId}/permissions`);
+  }
+  export async function getAllRoles(){
+    return requestClient.get('/roles/all');
+  }
 }

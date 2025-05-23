@@ -6,6 +6,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.uuid.Generators;
 import fun.yozora.admin.core.annotation.LogOperation;
+import fun.yozora.admin.core.service.UserRoleService;
+import fun.yozora.admin.domain.entity.Permission;
+import fun.yozora.admin.domain.entity.Role;
+import fun.yozora.admin.repository.mapper.UserRoleMapper;
 import fun.yozora.admin.web.dto.UserInfoDTO;
 import fun.yozora.admin.domain.entity.User;
 import fun.yozora.admin.core.service.UserService;
@@ -22,6 +26,11 @@ public class UserController
 {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRoleService userRoleService;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     @LogOperation(targetType = "user", actionType = "create")
     @PostMapping()
@@ -179,5 +188,20 @@ public class UserController
         userInfoDTO.setPermissions(StpUtil.getRoleList());
         userInfoDTO.setRoles(StpUtil.getRoleList());
         return SaResult.data(userInfoDTO);
+    }
+
+    @PostMapping("/{userId}/roles")
+    public SaResult assignRoles(
+            @PathVariable String userId,
+            @RequestBody List<String> roleCodes) {
+
+        boolean success = userRoleService.assignRoles(userId, roleCodes);
+        return success ? SaResult.ok("角色分配成功") : SaResult.error("角色分配失败");
+    }
+    @GetMapping("/{userId}/roles")
+    public SaResult getUserRoles(@PathVariable String userId)
+    {
+        List<Role> roles = userRoleMapper.selectRolesByUserId(userId);
+        return SaResult.data(roles);
     }
 }

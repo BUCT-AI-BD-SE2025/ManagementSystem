@@ -53,4 +53,11 @@ export namespace UserApi {
   export async function batchDeleteUser(uids: string[]) {
     return requestClient.delete('/user/batch', {data: uids});
   }
+
+  export async function getUserRoles(roleId: string) {
+    return requestClient.get(`/user/${roleId}/roles`);
+  }
+  export async function assignRoles(userId: string, rolesIds: string[]) {
+    return requestClient.post(`/user/${userId}/roles`, rolesIds);
+  }
 }

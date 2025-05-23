@@ -14,5 +14,5 @@ import java.util.List;
 public interface RolePermissionService extends IService<RolePermission> {
 
 
-    public void assignPermissionsToRole(String roleId, List<String> permIds);
+    boolean assignPermissionsToRole(String roleId, List<String> permIds);
 }

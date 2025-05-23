@@ -8,8 +8,6 @@ import { ElButton, ElImage } from 'element-plus';
 
 import type  { OnActionClickParams} from "#/adapter/vxe-table";
 import {RoleApi} from "#/api/management/role";
-import getArtifactList = RoleApi.getRoleList;
-
 import Form from "./form.vue";
 import type { Role as DataType } from '#/types/Role';
 import {$t} from "@vben/locales";
@@ -18,6 +16,7 @@ import { useColumns } from "./data";
 import {useGridSchema} from "./data";
 import {useBaseGridOptions} from "#/hooks/base/useBaseGridOptions";
 import {useBaseCRUD} from "#/hooks/base/useBaseCRUD";
+import getRoleList = RoleApi.getRoleList;
 
 
 
@@ -38,7 +37,7 @@ const formOptions: VbenFormProps = {
   // 按下回车时是否提交表单
   submitOnEnter: false,
 };
-const gridOptions: VxeTableGridOptions = useBaseGridOptions(useColumns(), getArtifactList);
+const gridOptions: VxeTableGridOptions = useBaseGridOptions(useColumns(), getRoleList);
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions,

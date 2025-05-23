@@ -3,6 +3,7 @@ package fun.yozora.admin.repository.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import fun.yozora.admin.domain.entity.Role;
 import fun.yozora.admin.domain.entity.UserRole;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ import java.util.List;
 public interface UserRoleMapper extends BaseMapper<UserRole>
 {
     List<Role> selectRolesByUserId(String id);
+
 }

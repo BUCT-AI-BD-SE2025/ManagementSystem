@@ -27,30 +27,7 @@ export const useGridSchema = () => {
   ];
   return schema;
 }
-export const useFormSchema = () => {
-  const schema: VbenFormProps['schema'] = [
-    {
-      component: 'Input',
-      fieldName: 'roleId',
-      label: 'ID',
-    },
-    {
-      component: 'Input',
-      fieldName: 'roleName',
-      label: '名称',
-    },
-    {
-      component: 'Input',
-      fieldName: 'roleCode',
-      label: '权限码',
-    },
-    {
-      component: 'Input',
-      fieldName: 'description',
-      label: '描述',
-    }]
-  return schema;
-}
+
 
 
 export const useColumns = () =>{
@@ -58,7 +35,7 @@ export const useColumns = () =>{
     { fixed: 'left', align: 'left',title: '',  type: 'checkbox',  width: 50},
     { fixed: 'left',field: 'roleId', title: 'ID' },
     { field: 'roleName', title: '名称'},
-    { field: 'roleCode', title: '权限码'},
+    { field: 'roleCode', title: '角色码'},
     { field: 'description', title: '描述'},
     {
       field: 'action',

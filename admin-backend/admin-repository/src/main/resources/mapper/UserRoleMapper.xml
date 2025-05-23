@@ -11,7 +11,16 @@
 
         FROM user_role ur
         JOIN role r ON ur.role_id = r.role_id
-        WHERE ur.role_id = #{userId}
+        WHERE ur.user_id = #{userId}
     </select>
+    <resultMap id="BaseResultMap" type="fun.yozora.admin.domain.entity.UserRole">
+        <id property="roleId" column="role_id" />
+        <id property="userId" column="user_id" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        role_id,user_id
+    </sql>
+
 
 </mapper>
