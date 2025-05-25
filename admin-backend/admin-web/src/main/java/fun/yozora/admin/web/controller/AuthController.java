@@ -30,6 +30,7 @@ public class AuthController
     @Autowired
     private LoginLogService loginLogService;
 
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public SaResult Login(@RequestBody LoginDTO loginDTO)
     {
