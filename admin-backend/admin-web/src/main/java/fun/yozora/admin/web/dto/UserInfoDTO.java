@@ -1,6 +1,6 @@
 package fun.yozora.admin.web.dto;
 
-import fun.yozora.admin.core.entity.User;
+import fun.yozora.admin.domain.entity.User;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 public class UserInfoDTO {
-    private String uid;
+    private String id;
     private String username;
     private String nickname;
     private String email;
@@ -23,7 +23,7 @@ public class UserInfoDTO {
     private String realName;
 
     public UserInfoDTO(User user) {
-        this.uid = user.getUid();
+        this.id = user.getUid();
         this.username = user.getUsername();
         this.nickname = user.getNickname();
         this.email = user.getEmail();

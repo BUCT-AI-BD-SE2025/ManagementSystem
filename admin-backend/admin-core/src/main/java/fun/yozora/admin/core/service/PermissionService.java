@@ -1,7 +1,7 @@
 package fun.yozora.admin.core.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import fun.yozora.admin.core.entity.Permission;
+import fun.yozora.admin.domain.entity.Permission;
 
 import java.util.List;
 
@@ -11,5 +11,5 @@ import java.util.List;
 * @createDate 2025-05-12 00:32:54
 */
 public interface PermissionService extends IService<Permission> {
-    List<Permission> getAllPermissionsByUserId(String uid);
+    List<Permission> getAllPermissionsByUserId(String id);
 }

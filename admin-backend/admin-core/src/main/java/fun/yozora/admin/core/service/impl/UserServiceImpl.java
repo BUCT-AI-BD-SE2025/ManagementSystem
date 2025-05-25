@@ -1,8 +1,8 @@
 package fun.yozora.admin.core.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import fun.yozora.admin.core.entity.User;
-import fun.yozora.admin.core.mapper.UserMapper;
+import fun.yozora.admin.domain.entity.User;
+import fun.yozora.admin.repository.mapper.UserMapper;
 import fun.yozora.admin.core.service.UserService;
 import org.springframework.stereotype.Service;
 

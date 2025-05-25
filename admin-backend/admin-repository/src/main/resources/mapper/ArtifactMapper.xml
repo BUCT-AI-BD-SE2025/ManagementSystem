@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fun.yozora.admin.repository.mapper.ArtifactMapper">
+
+    <resultMap id="BaseResultMap" type="fun.yozora.admin.domain.entity.Artifact">
+            <id property="id" column="id" />
+            <result property="originId" column="origin_id" />
+            <result property="title" column="title" />
+            <result property="url" column="url" />
+            <result property="image" column="image" />
+            <result property="location" column="location" />
+            <result property="period" column="period" />
+            <result property="material" column="material" />
+            <result property="measurement" column="measurement" />
+            <result property="artist" column="artist" />
+            <result property="creditLine" column="credit_line" />
+            <result property="type" column="type" />
+            <result property="description" column="description" />
+            <result property="illusion" column="illusion" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,origin_id,title,url,image,location,
+        period,material,measurement,artist,credit_line,
+        type,description,illusion
+    </sql>
+</mapper>

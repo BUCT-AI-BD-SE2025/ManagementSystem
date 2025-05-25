@@ -71,7 +71,22 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
       return config;
     },
   });
-
+  // 自定义拦截器用于处理 401 未登录错误
+  client.addResponseInterceptor({
+    fulfilled: (response) => {
+      const data = response.data;
+      if (data && data.code === 401) {
+        // 清空 Cookie 中的 satoken
+        // 可选：触发重新认证逻辑
+        doReAuthenticate();
+      }
+      return response;
+    },
+    rejected: (error) => {
+      // 处理请求错误
+      return Promise.reject(error);
+    },
+  });
   // 处理返回的响应数据格式
   client.addResponseInterceptor(
     defaultResponseInterceptor({
@@ -98,7 +113,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
       // 这里可以根据业务进行定制,你可以拿到 error 内的信息进行定制化处理，根据不同的 code 做不同的提示，而不是直接使用 message.error 提示 msg
       // 当前mock接口返回的错误字段是 error 或者 message
       const responseData = error?.response?.data ?? {};
-      const errorMessage = responseData?.error ?? responseData?.message ?? '';
+      const errorMessage = responseData?.error ?? responseData?.msg ?? '';
       // 如果没有错误信息，则会根据状态码进行提示
       ElMessage.error(errorMessage || msg);
     }),

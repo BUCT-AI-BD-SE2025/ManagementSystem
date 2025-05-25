@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fun.yozora.admin.repository.mapper.TextModerationResultMapper">
+
+    <resultMap id="BaseResultMap" type="fun.yozora.admin.domain.entity.TextModerationResult">
+            <id property="id" column="id" />
+            <result property="bizType" column="biz_type" />
+            <result property="label" column="label" />
+            <result property="suggestion" column="suggestion" />
+            <result property="keywords" column="keywords" />
+            <result property="score" column="score" />
+            <result property="detailResults" column="detail_results" />
+            <result property="riskDetails" column="risk_details" />
+            <result property="extraInfo" column="extra_info" />
+            <result property="dataId" column="data_id" />
+            <result property="subLabel" column="sub_label" />
+            <result property="contextText" column="context_text" />
+            <result property="sentimentAnalysis" column="sentiment_analysis" />
+            <result property="hitType" column="hit_type" />
+            <result property="requestId" column="request_id" />
+            <result property="content" column="content" />
+            <result property="createTime" column="create_time" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,biz_type,label,suggestion,keywords,score,
+        detail_results,risk_details,extra_info,data_id,sub_label,
+        context_text,sentiment_analysis,hit_type,request_id,content,
+        create_time
+    </sql>
+</mapper>

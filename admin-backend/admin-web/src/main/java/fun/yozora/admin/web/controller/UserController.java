@@ -2,17 +2,23 @@ package fun.yozora.admin.web.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
-import fun.yozora.admin.web.dto.UpdateUserInfoDTO;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.uuid.Generators;
+import fun.yozora.admin.core.annotation.LogOperation;
+import fun.yozora.admin.core.service.UserRoleService;
+import fun.yozora.admin.domain.entity.Permission;
+import fun.yozora.admin.domain.entity.Role;
+import fun.yozora.admin.repository.mapper.UserRoleMapper;
 import fun.yozora.admin.web.dto.UserInfoDTO;
-import fun.yozora.admin.core.entity.User;
-import fun.yozora.admin.core.service.PermissionService;
+import fun.yozora.admin.domain.entity.User;
 import fun.yozora.admin.core.service.UserService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -22,15 +28,100 @@ public class UserController
     private UserService userService;
 
     @Autowired
-    private PermissionService permissionService;
+    private UserRoleService userRoleService;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+
+    @LogOperation(targetType = "user", actionType = "create")
+    @PostMapping()
+    public SaResult createUser(@RequestBody User user)
+    {
+        user.setUid(Generators.timeBasedGenerator().generate().toString());
+        if (userService.save(user))
+            return SaResult.ok("创建成功");
+        else
+            return SaResult.error("创建失败");
+    }
+
+    @GetMapping(value = "/all")
+    public SaResult getUsers(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "20") Integer pageSize,
+            @RequestParam(required = false) String uid,
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) String nickname,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) String sex,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime loginStartTime,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime loginEndTime
+    )
+    {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        // UID精确匹配
+        if(uid !=null&&!uid.isEmpty())
+            queryWrapper.eq("uid", uid);
+        // 用户名模糊匹配
+        if(username !=null&&!username.isEmpty())
+            queryWrapper.like("username", username);
+        // 昵称模糊匹配
+        if(nickname !=null&&!nickname.isEmpty())
+            queryWrapper.like("nickname", nickname);
+        // 邮箱模糊匹配
+        if(email !=null&&!email.isEmpty())
+            queryWrapper.like("email", email);
+        // 手机号模糊匹配
+        if(phone !=null&&!phone.isEmpty())
+            queryWrapper.like("phone", phone);
+        // 状态精确匹配
+        if(status !=null&&!status.isEmpty())
+            queryWrapper.eq("status", status);
+        //  性别精确匹配
+        if(sex !=null&&!sex.isEmpty())
+            queryWrapper.eq("sex", sex);
+        // 注册时间范围
+        if(startTime !=null)
+            queryWrapper.ge("created_at", startTime);
+        if(endTime !=null)
+            queryWrapper.le("created_at", endTime);
+        // 登录时间范围
+        if(loginStartTime !=null)
+            queryWrapper.ge("last_login", loginStartTime);
+        if(loginEndTime !=null)
+            queryWrapper.le("last_login", loginEndTime);
+        Page<User> userPage = userService.page(new Page<>(page, pageSize), queryWrapper);
+        return SaResult.data(userPage);
+    }
+
+    @LogOperation(targetType = "user", actionType = "update")
+    @PutMapping(value = "/{uid}")
+    public SaResult updateUser(@PathVariable String uid, @RequestBody User user)
+    {
+        user.setUid(uid);
+        return SaResult.data(userService.updateById(user));
+    }
+
+    @LogOperation(targetType = "user", actionType = "delete")
+    @DeleteMapping(value = "/{id}")
+    public SaResult deleteUser(@PathVariable String id)
+    {
+        return SaResult.data(userService.removeById(id));
+    }
+    @LogOperation(targetType = "user", actionType = "delete")
+    @DeleteMapping(value = "/batch")
+    public SaResult deleteUsers(@RequestBody List<String> ids)
+    {
+        return SaResult.data(userService.removeBatchByIds(ids));
+    }
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public SaResult doRegister(String username, String password, String email)
     {
         if (username==null||password==null||email==null)
-        {
             return SaResult.error("用户名或密码或邮箱不能为空");
-        }
 
         if (userService.isExistUsername(username))
             return SaResult.error("用户名已存在");
@@ -40,52 +131,20 @@ public class UserController
 
         User user = new User(username,  password, email);
 
-        if (userService.addUser(user))
+        if (userService.save(user))
             return SaResult.ok("注册成功");
         else
             return SaResult.error("注册失败");
     }
 
 
-    @RequestMapping(value = "/update",method = RequestMethod.PUT)
-    public SaResult update(@RequestBody UpdateUserInfoDTO user)
-    {
-        if (!StpUtil.isLogin())
-        {
-            return SaResult.error("未登录");
-        }
-
-        String uid = StpUtil.getLoginId().toString();
-        User dbUser = userService.getUserByUid(uid);
-
-        if (dbUser == null)
-        {
-            return SaResult.error("用户不存在");
-        }
-
-        BeanUtils.copyProperties(user, dbUser);
-
-        if (userService.updateUser(dbUser))
-        {
-            return SaResult.ok("更新成功");
-        }
-        else
-        {
-            return SaResult.error("更新失败");
-        }
-    }
-
     @RequestMapping(value = "/isLogin",method = RequestMethod.GET)
     public SaResult isLogin()
     {
         if (StpUtil.isLogin())
-        {
             return SaResult.ok("已登录");
-        }
         else
-        {
-            return SaResult.error("未登录");
-        }
+            return SaResult.error("未登录").setCode(401);
     }
 
     @RequestMapping(value = "/tokenInfo",method = RequestMethod.GET)
@@ -118,19 +177,31 @@ public class UserController
     public SaResult getUserInfo()
     {
         if (!StpUtil.isLogin())
-        {
-            return SaResult.error("未登录");
-        }
-        String uid = StpUtil.getLoginId().toString();
-        User user = userService.getUserByUid(uid);
+            return SaResult.error("未登录").setCode(401);
+        String id = StpUtil.getLoginId().toString();
+        User user = userService.getUserByUid(id);
 
         if (user == null)
-        {
             return SaResult.error("用户不存在");
-        }
         UserInfoDTO userInfoDTO = new UserInfoDTO(user);
+
         userInfoDTO.setPermissions(StpUtil.getRoleList());
         userInfoDTO.setRoles(StpUtil.getRoleList());
         return SaResult.data(userInfoDTO);
+    }
+
+    @PostMapping("/{userId}/roles")
+    public SaResult assignRoles(
+            @PathVariable String userId,
+            @RequestBody List<String> roleCodes) {
+
+        boolean success = userRoleService.assignRoles(userId, roleCodes);
+        return success ? SaResult.ok("角色分配成功") : SaResult.error("角色分配失败");
+    }
+    @GetMapping("/{userId}/roles")
+    public SaResult getUserRoles(@PathVariable String userId)
+    {
+        List<Role> roles = userRoleMapper.selectRolesByUserId(userId);
+        return SaResult.data(roles);
     }
 }

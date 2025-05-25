@@ -96,11 +96,13 @@ const gridOptions: VxeTableGridOptions<RowType> = {
     ajax: {
       query: async ({ page }, formValues) => {
         message.success(`Query params: ${JSON.stringify(formValues)}`);
-        return await getExampleTableApi({
+        const res = await getExampleTableApi({
           page: page.currentPage,
           pageSize: page.pageSize,
           ...formValues,
         });
+        console.log(res);
+        return res;
       },
     },
   },

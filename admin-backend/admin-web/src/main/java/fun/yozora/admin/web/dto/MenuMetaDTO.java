@@ -1,7 +1,7 @@
 package fun.yozora.admin.web.dto;
 
-import fun.yozora.admin.core.enums.BadgeType;
-import fun.yozora.admin.core.enums.BadgeVariants;
+import fun.yozora.admin.domain.enums.BadgeType;
+import fun.yozora.admin.domain.enums.BadgeVariants;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

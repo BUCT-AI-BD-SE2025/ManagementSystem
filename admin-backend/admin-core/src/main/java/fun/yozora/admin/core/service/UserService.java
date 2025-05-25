@@ -1,7 +1,7 @@
 package fun.yozora.admin.core.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import fun.yozora.admin.core.entity.User;
+import fun.yozora.admin.domain.entity.User;
 
 /**
 * @author YOZORA
@@ -25,5 +25,5 @@ public interface UserService extends IService<User> {
 
     boolean addUser(User user);
 
-    User getUserByUid(String uid);
+    User getUserByUid(String id);
 }
