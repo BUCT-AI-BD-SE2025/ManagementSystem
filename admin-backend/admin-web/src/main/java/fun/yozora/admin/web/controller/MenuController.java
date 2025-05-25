@@ -23,7 +23,7 @@ public class MenuController {
         return SaResult.ok("获取成功").setData(menus);
     }
     private List<MenuDTO> buildDashboardMenus() {
-        // 构建子菜单 Analytics
+
         MenuDTO analytics = MenuDTO.builder()
                 .name("Analytics")
                 .path("/analytics")
@@ -35,7 +35,6 @@ public class MenuController {
                         .build())
                 .build();
 
-        // 构建子菜单 Workspace
         MenuDTO workspace = MenuDTO.builder()
                 .name("Workspace")
                 .path("/workspace")
@@ -46,7 +45,6 @@ public class MenuController {
                         .build())
                 .build();
 
-        // 构建父级 Dashboard 菜单
         MenuDTO dashboard = MenuDTO.builder()
                 .name("Dashboard")
                 .path("/")
@@ -59,8 +57,6 @@ public class MenuController {
                 .children(List.of(analytics))
                 .build();
 
-
-
         MenuDTO user = MenuDTO.builder()
                 .name("User")
                 .path("/user")
@@ -71,7 +67,6 @@ public class MenuController {
                         .build())
                 .build();
 
-        // 构建 文物管理页面
         MenuDTO artifact = MenuDTO.builder()
                 .name("Artifact")
                 .path("/artifact")
@@ -130,7 +125,7 @@ public class MenuController {
                         .title("page.management.title")
                         .order(-1)
                         .build())
-                .children(List.of(user, role, permission, artifact, comment, database))
+                .children(List.of(user, role, permission, artifact, comment))
                 .build();
 
         MenuDTO commentReivew = MenuDTO.builder()
